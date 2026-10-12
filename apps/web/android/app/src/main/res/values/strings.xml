@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SVCET Smart Bus Tracker</string>
+    <string name="title_activity_main">SVCET Smart Bus Tracker</string>
+    <string name="package_name">in.ac.svcet.bustracker</string>
+    <string name="custom_url_scheme">in.ac.svcet.bustracker</string>
+</resources>

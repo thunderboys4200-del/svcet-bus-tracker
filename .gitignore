@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Production build outputs
+dist/
+dist-ssr/
+apps/api/dist/
+
+# Android build outputs
+.gradle/
+build/
+apps/web/android/.gradle/
+apps/web/android/app/build/
+apps/web/android/capacitor-cordova-android-plugins/build/
+*.apk
+*.aab
+
+# Editor & OS files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

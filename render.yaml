@@ -1,0 +1,26 @@
+# Render Blueprint Specification for SVCET Smart Bus Tracker
+# Connect your repository to Render to auto-deploy the production backend.
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: svcet-bus-tracker-api
+    runtime: node
+    plan: free
+    region: oregon
+    rootDir: apps/api
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: "https://localhost,capacitor://localhost,*"
