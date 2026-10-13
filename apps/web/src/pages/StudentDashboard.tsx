@@ -189,18 +189,19 @@ export function StudentDashboard({ initialBusId, activePage }: StudentDashboardP
           </p>
         </div>
 
-        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
           {/* Bus Selector */}
           <div
             style={{
               display: "flex",
               alignItems: "center",
               gap: "8px",
-              padding: "7px 14px",
-              background: "#ffffff",
-              border: "1px solid #cbd5e1",
-              borderRadius: "10px",
-              boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+              padding: "0 14px",
+              height: "42px",
+              background: "var(--surface)",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius-md)",
+              boxShadow: "var(--shadow-xs)",
             }}
           >
             <BusFront size={18} color="#2563eb" />
@@ -213,7 +214,7 @@ export function StudentDashboard({ initialBusId, activePage }: StudentDashboardP
                 background: "transparent",
                 fontSize: "13px",
                 fontWeight: "700",
-                color: "#1e293b",
+                color: "var(--navy-900)",
                 cursor: "pointer",
                 outline: "none",
               }}
@@ -224,7 +225,7 @@ export function StudentDashboard({ initialBusId, activePage }: StudentDashboardP
                 </option>
               ))}
             </select>
-            <ChevronDown size={14} color="#64748b" />
+            <ChevronDown size={14} color="var(--text-muted)" />
           </div>
 
           <button
@@ -233,14 +234,23 @@ export function StudentDashboard({ initialBusId, activePage }: StudentDashboardP
             disabled={refreshing}
             title="Refresh bus telemetry"
           >
-            <RefreshCw size={15} className={refreshing ? "spin" : ""} />
+            <RefreshCw size={14} className={refreshing ? "spin" : ""} />
             <span>{refreshing ? "Refreshing..." : "Refresh"}</span>
           </button>
         </div>
       </section>
 
       {/* Navigation sub-tabs */}
-      <div style={{ display: "flex", gap: "8px", borderBottom: "1px solid #e2e8f0", paddingBottom: "12px", marginBottom: "20px" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: "8px",
+          borderBottom: "1px solid var(--border)",
+          paddingBottom: "12px",
+          marginBottom: "22px",
+          overflowX: "auto",
+        }}
+      >
         <button
           className={`button ${activeTab === "dashboard" ? "button-primary" : "button-secondary"}`}
           onClick={() => setActiveTab("dashboard")}
@@ -283,21 +293,21 @@ export function StudentDashboard({ initialBusId, activePage }: StudentDashboardP
         <div
           style={{
             padding: "14px 18px",
-            borderRadius: "12px",
-            background: "#eff6ff",
-            border: "1px solid #bfdbfe",
-            color: "#1e40af",
+            borderRadius: "var(--radius-md)",
+            background: "var(--primary-50)",
+            border: "1px solid var(--primary-100)",
+            color: "var(--primary-900)",
             display: "flex",
             alignItems: "center",
             gap: "12px",
-            marginBottom: "20px",
+            marginBottom: "22px",
           }}
         >
-          <Clock3 size={22} color="#2563eb" />
+          <Clock3 size={22} color="#2563eb" style={{ flexShrink: 0 }} />
           <div>
-            <strong>Bus is Currently Idle / Off-Duty</strong>
-            <div style={{ fontSize: "12px", color: "#3b82f6", marginTop: "2px" }}>
-              Trip has not started yet. When the assigned driver starts the route, live GPS telemetry and real-time movement will appear on the map.
+            <strong style={{ fontSize: "13px" }}>Bus is Currently Idle / Off-Duty</strong>
+            <div style={{ fontSize: "12px", color: "var(--primary-700)", marginTop: "2px" }}>
+              Trip has not started yet. When the assigned driver starts the route, live GPS telemetry and real-time movement will stream on the map.
             </div>
           </div>
         </div>
@@ -403,27 +413,27 @@ export function StudentDashboard({ initialBusId, activePage }: StudentDashboardP
                   <p>Route timeline & realistic ETA</p>
                 </div>
                 <span className="panel-header-icon">
-                  <RouteIcon size={19} />
+                  <RouteIcon size={18} />
                 </span>
               </div>
 
               {/* Realistic ETA Card */}
               <div
                 style={{
-                  padding: "14px",
-                  borderRadius: "10px",
-                  background: isLive ? "#f0fdf4" : "#f8fafc",
-                  border: isLive ? "1px solid #bbf7d0" : "1px solid #e2e8f0",
+                  padding: "14px 16px",
+                  borderRadius: "var(--radius-md)",
+                  background: isLive ? "var(--success-50)" : "var(--surface-subtle)",
+                  border: isLive ? "1px solid var(--success-100)" : "1px solid var(--border)",
                   marginBottom: "16px",
                 }}
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }}>
-                  <Navigation size={16} color={isLive ? "#16a34a" : "#64748b"} />
-                  <strong style={{ fontSize: "13px", color: isLive ? "#15803d" : "#475569" }}>
+                  <Navigation size={15} color={isLive ? "#16a34a" : "#64748b"} />
+                  <strong style={{ fontSize: "13px", color: isLive ? "var(--success-700)" : "var(--navy-800)" }}>
                     Estimated Arrival (ETA)
                   </strong>
                 </div>
-                <p style={{ margin: 0, fontSize: "12px", color: "#334155", fontWeight: 600 }}>
+                <p style={{ margin: 0, fontSize: "12px", color: "var(--navy-700)", fontWeight: 600 }}>
                   {eta.label}
                 </p>
               </div>
@@ -431,7 +441,7 @@ export function StudentDashboard({ initialBusId, activePage }: StudentDashboardP
               {/* Route stop timeline */}
               <div className="trip-route-heading">
                 <span className="trip-route-icon">
-                  <MapPin size={20} />
+                  <MapPin size={18} />
                 </span>
                 <div>
                   <strong>{route?.name || "SVCET Route"}</strong>
@@ -454,7 +464,7 @@ export function StudentDashboard({ initialBusId, activePage }: StudentDashboardP
                     </div>
                   ))
                 ) : (
-                  <div style={{ color: "#94a3b8", fontSize: "12px" }}>No stops defined for this route.</div>
+                  <div style={{ color: "var(--text-muted)", fontSize: "12px" }}>No stops defined for this route.</div>
                 )}
               </div>
 
@@ -467,7 +477,7 @@ export function StudentDashboard({ initialBusId, activePage }: StudentDashboardP
                   <span>Assigned Driver</span>
                   <strong>{tracking?.driverName || "Driver"}</strong>
                 </div>
-                <ShieldCheck size={19} className="driver-verified" />
+                <ShieldCheck size={18} className="driver-verified" />
               </div>
             </article>
           </section>
@@ -493,8 +503,8 @@ export function StudentDashboard({ initialBusId, activePage }: StudentDashboardP
               onClick={() => void loadTracking(true)}
               disabled={refreshing}
             >
-              <RefreshCw size={16} className={refreshing ? "spin" : ""} />
-              Refresh
+              <RefreshCw size={15} className={refreshing ? "spin" : ""} />
+              <span>Refresh</span>
             </button>
           </div>
 
@@ -546,20 +556,22 @@ export function StudentDashboard({ initialBusId, activePage }: StudentDashboardP
                 <p>Campus transport route metadata.</p>
               </div>
               <span className="panel-header-icon">
-                <BusFront size={20} />
+                <BusFront size={18} />
               </span>
             </div>
 
             <div className="route-summary-card">
               <div className="route-summary-icon">
-                <BusFront size={28} />
+                <BusFront size={24} />
               </div>
               <div>
-                <span>Selected Bus</span>
+                <span style={{ fontSize: "11px", color: "var(--text-muted)", fontWeight: 600 }}>Selected Bus</span>
                 <h3>{bus?.busNumber || "BUS-001"}</h3>
-                <p>{bus?.registrationNumber || "TN10AB1234"}</p>
+                <p style={{ margin: "2px 0 0", color: "var(--text-muted)", fontSize: "12px" }}>
+                  {bus?.registrationNumber || "TN10AB1234"}
+                </p>
               </div>
-              <span className={`live-badge ${isTripActive ? "" : "live-badge-muted"}`}>
+              <span className={`live-badge ${isTripActive ? "" : "live-badge-muted"}`} style={{ marginLeft: "auto" }}>
                 <span className="live-dot" />
                 {isTripActive ? "TRIP RUNNING" : "NOT RUNNING"}
               </span>
@@ -578,20 +590,31 @@ export function StudentDashboard({ initialBusId, activePage }: StudentDashboardP
             <div className="panel-header">
               <div>
                 <h2>Sequence of Stops</h2>
-                <p>All stops along {route?.name}.</p>
+                <p>All designated stops along {route?.name}.</p>
               </div>
-              <span className="stop-count">{route?.stops?.length || 0}</span>
+              <span
+                style={{
+                  background: "var(--primary-50)",
+                  color: "var(--primary-700)",
+                  padding: "4px 10px",
+                  borderRadius: "var(--radius-full)",
+                  fontSize: "12px",
+                  fontWeight: 700,
+                }}
+              >
+                {route?.stops?.length || 0} Stops
+              </span>
             </div>
 
             {route?.stops && route.stops.length > 0 ? (
-              <div className="route-timeline route-timeline-page">
+              <div className="route-timeline route-timeline-page" style={{ maxHeight: "400px" }}>
                 <div className="timeline-line" />
                 {route.stops.map((stop, index) => (
                   <div className="timeline-stop" key={`${stop.name}-${index}`}>
                     <span className={`timeline-dot ${index === 0 ? "timeline-dot-start" : ""}`} />
                     <div>
                       <strong>{stop.name}</strong>
-                      <span>
+                      <span style={{ fontFamily: "monospace" }}>
                         Stop {stop.sequence || index + 1} • {stop.latitude?.toFixed(4)}, {stop.longitude?.toFixed(4)}
                       </span>
                     </div>
@@ -599,10 +622,14 @@ export function StudentDashboard({ initialBusId, activePage }: StudentDashboardP
                 ))}
               </div>
             ) : (
-              <div className="empty-state">
-                <MapPin size={28} />
-                <strong>No stops configured</strong>
-                <p>The administrator has not configured stops for this route yet.</p>
+              <div style={{ textAlign: "center", padding: "32px 16px", color: "var(--text-muted)" }}>
+                <MapPin size={32} color="var(--text-light)" style={{ margin: "0 auto 8px" }} />
+                <strong style={{ display: "block", color: "var(--navy-900)", fontSize: "14px" }}>
+                  No stops configured
+                </strong>
+                <p style={{ margin: "4px 0 0", fontSize: "12px" }}>
+                  The administrator has not configured stops for this route yet.
+                </p>
               </div>
             )}
           </article>
@@ -618,13 +645,13 @@ export function StudentDashboard({ initialBusId, activePage }: StudentDashboardP
               <p>Operational updates and live status.</p>
             </div>
             <span className="panel-header-icon">
-              <Bell size={20} />
+              <Bell size={18} />
             </span>
           </div>
 
           <div className="notification-item">
             <div className={`notification-icon ${isTripActive ? "notification-icon-success" : "notification-icon-neutral"}`}>
-              {isTripActive ? <CheckCircle2 size={20} /> : <Clock3 size={20} />}
+              {isTripActive ? <CheckCircle2 size={18} /> : <Clock3 size={18} />}
             </div>
             <div className="notification-copy">
               <strong>{isTripActive ? `Bus ${bus?.busNumber} Trip in Progress` : `Bus ${bus?.busNumber} is Currently Idle`}</strong>
@@ -639,7 +666,7 @@ export function StudentDashboard({ initialBusId, activePage }: StudentDashboardP
 
           <div className="notification-item">
             <div className={`notification-icon ${isLive ? "notification-icon-success" : "notification-icon-neutral"}`}>
-              <Signal size={20} />
+              <Signal size={18} />
             </div>
             <div className="notification-copy">
               <strong>{isLive ? "Live GPS Connected" : "Awaiting Fresh Signal"}</strong>
@@ -648,7 +675,7 @@ export function StudentDashboard({ initialBusId, activePage }: StudentDashboardP
                   ? `Last verified location recorded at ${formatTime(location.recordedAt)}.`
                   : "Waiting for driver device geolocation telemetry."}
               </p>
-              <span>WebSocket real-time channel enabled</span>
+              <span>WebSocket real-time channel active</span>
             </div>
           </div>
         </section>

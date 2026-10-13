@@ -479,7 +479,7 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
           disabled={refreshing}
           title="Refresh all records"
         >
-          <RefreshCw size={15} className={refreshing ? "spin" : ""} />
+          <RefreshCw size={14} className={refreshing ? "spin" : ""} />
           <span>{refreshing ? "Refreshing..." : "Refresh Data"}</span>
         </button>
       </section>
@@ -490,18 +490,19 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
           role="status"
           style={{
             padding: "12px 16px",
-            borderRadius: "10px",
-            background: "#f0fdf4",
-            border: "1px solid #bbf7d0",
-            color: "#166534",
+            borderRadius: "var(--radius-md)",
+            background: "var(--success-50)",
+            border: "1px solid var(--success-100)",
+            color: "var(--success-700)",
             fontSize: "13px",
+            fontWeight: 600,
             display: "flex",
             alignItems: "center",
             gap: "10px",
-            marginBottom: "16px",
+            marginBottom: "18px",
           }}
         >
-          <CheckCircle2 size={18} />
+          <CheckCircle2 size={18} style={{ flexShrink: 0 }} />
           <span>{successMsg}</span>
         </div>
       )}
@@ -513,14 +514,23 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
             <strong>Error</strong>
             <span>{error}</span>
           </div>
-          <button className="icon-button" onClick={() => setError("")}>
+          <button className="icon-button" onClick={() => setError("")} style={{ marginLeft: "auto", padding: "4px" }}>
             <X size={16} />
           </button>
         </div>
       )}
 
       {/* Navigation tabs */}
-      <div style={{ display: "flex", gap: "8px", borderBottom: "1px solid #e2e8f0", paddingBottom: "12px", marginBottom: "20px", flexWrap: "wrap" }}>
+      <div
+        style={{
+          display: "flex",
+          gap: "8px",
+          borderBottom: "1px solid var(--border)",
+          paddingBottom: "12px",
+          marginBottom: "22px",
+          flexWrap: "wrap",
+        }}
+      >
         <button
           className={`button ${activeTab === "fleet-overview" ? "button-primary" : "button-secondary"}`}
           onClick={() => setActiveTab("fleet-overview")}
@@ -562,7 +572,7 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
       {/* OVERVIEW TAB */}
       {activeTab === "fleet-overview" && (
         <>
-          <section className="stats-row">
+          <section className="stats-grid">
             <StatCard
               icon={BusFront}
               iconColorClass="blue"
@@ -598,22 +608,37 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
           </section>
 
           {/* Quick Summary Grid */}
-          <section style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px", marginTop: "20px" }}>
+          <section style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "20px", marginTop: "12px" }}>
             <article className="panel">
               <div className="panel-header">
-                <h2>Buses & Route Assignments</h2>
+                <div>
+                  <h2>Buses & Route Assignments</h2>
+                  <p>Recent bus assignments</p>
+                </div>
                 <button className="button button-secondary" onClick={() => setActiveTab("buses")}>View All</button>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                 {buses.slice(0, 5).map((b) => (
-                  <div key={b.id || (b as any)._id} style={{ display: "flex", justifyContent: "space-between", padding: "10px", background: "#f8fafc", borderRadius: "8px" }}>
+                  <div
+                    key={b.id || (b as any)._id}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "12px 14px",
+                      background: "var(--surface-subtle)",
+                      borderRadius: "var(--radius-md)",
+                      border: "1px solid var(--border)",
+                    }}
+                  >
                     <div>
-                      <strong>{b.busNumber}</strong> ({b.registrationNumber})
-                      <div style={{ fontSize: "11px", color: "#64748b" }}>
+                      <strong style={{ color: "var(--navy-900)", fontSize: "13px" }}>{b.busNumber}</strong>{" "}
+                      <span style={{ color: "var(--text-muted)", fontSize: "12px" }}>({b.registrationNumber})</span>
+                      <div style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "2px" }}>
                         Route: {b.assignedRoute?.name || "Unassigned"}
                       </div>
                     </div>
-                    <span style={{ fontSize: "12px", color: "#2563eb", fontWeight: 600 }}>
+                    <span style={{ fontSize: "12px", color: "var(--primary-600)", fontWeight: 700 }}>
                       Driver: {b.assignedDriverName || "None"}
                     </span>
                   </div>
@@ -623,16 +648,31 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
 
             <article className="panel">
               <div className="panel-header">
-                <h2>Recent Campus Routes</h2>
+                <div>
+                  <h2>Campus Routes Network</h2>
+                  <p>Active configured route corridors</p>
+                </div>
                 <button className="button button-secondary" onClick={() => setActiveTab("routes")}>View All</button>
               </div>
               <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
                 {routes.slice(0, 5).map((r: any) => (
-                  <div key={r._id || r.id} style={{ display: "flex", justifyContent: "space-between", padding: "10px", background: "#f8fafc", borderRadius: "8px" }}>
+                  <div
+                    key={r._id || r.id}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "12px 14px",
+                      background: "var(--surface-subtle)",
+                      borderRadius: "var(--radius-md)",
+                      border: "1px solid var(--border)",
+                    }}
+                  >
                     <div>
-                      <strong>{r.name}</strong> ({r.code})
-                      <div style={{ fontSize: "11px", color: "#64748b" }}>
-                        {r.stops?.length || 0} stops sequenced
+                      <strong style={{ color: "var(--navy-900)", fontSize: "13px" }}>{r.name}</strong>{" "}
+                      <span style={{ color: "var(--primary-600)", fontWeight: 700, fontSize: "12px" }}>({r.code})</span>
+                      <div style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "2px" }}>
+                        {r.stops?.length || 0} stops sequenced along path
                       </div>
                     </div>
                   </div>
@@ -663,50 +703,50 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
             </button>
           </div>
 
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
+          <div className="table-container">
+            <table className="data-table">
               <thead>
-                <tr style={{ borderBottom: "2px solid #e2e8f0", textAlign: "left", color: "#64748b" }}>
-                  <th style={{ padding: "12px" }}>Bus Number</th>
-                  <th style={{ padding: "12px" }}>Registration</th>
-                  <th style={{ padding: "12px" }}>Assigned Route</th>
-                  <th style={{ padding: "12px" }}>Assigned Driver</th>
-                  <th style={{ padding: "12px" }}>Capacity</th>
-                  <th style={{ padding: "12px", textAlign: "right" }}>Actions</th>
+                <tr>
+                  <th>Bus Number</th>
+                  <th>Registration</th>
+                  <th>Assigned Route</th>
+                  <th>Assigned Driver</th>
+                  <th>Capacity</th>
+                  <th style={{ textAlign: "right" }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {buses.map((b: any) => (
-                  <tr key={b._id || b.id} style={{ borderBottom: "1px solid #f1f5f9" }}>
-                    <td style={{ padding: "12px", fontWeight: "700" }}>{b.busNumber}</td>
-                    <td style={{ padding: "12px" }}>{b.registrationNumber}</td>
-                    <td style={{ padding: "12px" }}>
+                  <tr key={b._id || b.id}>
+                    <td style={{ fontWeight: 800, color: "var(--navy-900)" }}>{b.busNumber}</td>
+                    <td>{b.registrationNumber}</td>
+                    <td>
                       {b.assignedRouteId?.name ? (
-                        <span style={{ padding: "2px 8px", background: "#f0fdf4", color: "#166534", borderRadius: "6px", fontSize: "11px", fontWeight: 600 }}>
+                        <span className="badge-pill badge-success">
                           {b.assignedRouteId.name} ({b.assignedRouteId.code})
                         </span>
                       ) : b.assignedRoute?.name ? (
-                        <span style={{ padding: "2px 8px", background: "#f0fdf4", color: "#166534", borderRadius: "6px", fontSize: "11px", fontWeight: 600 }}>
+                        <span className="badge-pill badge-success">
                           {b.assignedRoute.name}
                         </span>
                       ) : (
-                        <span style={{ color: "#94a3b8" }}>Unassigned</span>
+                        <span style={{ color: "var(--text-light)" }}>Unassigned</span>
                       )}
                     </td>
-                    <td style={{ padding: "12px" }}>
+                    <td>
                       {b.assignedDriverId?.name ? (
-                        <span>{b.assignedDriverId.name}</span>
+                        <span style={{ fontWeight: 600 }}>{b.assignedDriverId.name}</span>
                       ) : b.assignedDriverName && b.assignedDriverName !== "Unassigned" ? (
-                        <span>{b.assignedDriverName}</span>
+                        <span style={{ fontWeight: 600 }}>{b.assignedDriverName}</span>
                       ) : (
-                        <span style={{ color: "#94a3b8" }}>Unassigned</span>
+                        <span style={{ color: "var(--text-light)" }}>Unassigned</span>
                       )}
                     </td>
-                    <td style={{ padding: "12px" }}>{b.capacity || 40} seats</td>
-                    <td style={{ padding: "12px", textAlign: "right" }}>
+                    <td>{b.capacity || 40} seats</td>
+                    <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
                       <button
                         className="button button-secondary"
-                        style={{ padding: "5px 9px", marginRight: "6px", fontSize: "11px" }}
+                        style={{ padding: "0 10px", minHeight: "32px", marginRight: "6px", fontSize: "11px" }}
                         onClick={() => {
                           setAssignForm({
                             busId: b._id || b.id,
@@ -720,7 +760,8 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
                       </button>
                       <button
                         className="button button-secondary"
-                        style={{ padding: "5px 9px", marginRight: "6px", fontSize: "11px" }}
+                        style={{ padding: "0 8px", minHeight: "32px", marginRight: "6px" }}
+                        title="Edit Bus Details"
                         onClick={() => {
                           setEditingItem(b);
                           setBusForm({
@@ -731,14 +772,21 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
                           setModalType("bus");
                         }}
                       >
-                        <Edit size={12} />
+                        <Edit size={13} />
                       </button>
                       <button
                         className="button"
-                        style={{ padding: "5px 9px", fontSize: "11px", background: "#fee2e2", color: "#dc2626" }}
+                        style={{
+                          padding: "0 8px",
+                          minHeight: "32px",
+                          background: "var(--danger-50)",
+                          color: "var(--danger-600)",
+                          border: "1px solid var(--danger-100)",
+                        }}
+                        title="Delete Bus"
                         onClick={() => handleDeleteBus(b._id || b.id)}
                       >
-                        <Trash2 size={12} />
+                        <Trash2 size={13} />
                       </button>
                     </td>
                   </tr>
@@ -769,49 +817,47 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
             </button>
           </div>
 
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
+          <div className="table-container">
+            <table className="data-table">
               <thead>
-                <tr style={{ borderBottom: "2px solid #e2e8f0", textAlign: "left", color: "#64748b" }}>
-                  <th style={{ padding: "12px" }}>College ID</th>
-                  <th style={{ padding: "12px" }}>Driver Name</th>
-                  <th style={{ padding: "12px" }}>Status</th>
-                  <th style={{ padding: "12px", textAlign: "right" }}>Actions</th>
+                <tr>
+                  <th>College ID</th>
+                  <th>Driver Name</th>
+                  <th>Status</th>
+                  <th style={{ textAlign: "right" }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {drivers.map((d: any) => (
-                  <tr key={d._id || d.id} style={{ borderBottom: "1px solid #f1f5f9" }}>
-                    <td style={{ padding: "12px", fontWeight: "700" }}>{d.collegeId}</td>
-                    <td style={{ padding: "12px" }}>{d.name}</td>
-                    <td style={{ padding: "12px" }}>
-                      <span
-                        style={{
-                          padding: "3px 8px",
-                          borderRadius: "12px",
-                          fontSize: "11px",
-                          fontWeight: 700,
-                          backgroundColor: d.active ? "#dcfce7" : "#fee2e2",
-                          color: d.active ? "#166534" : "#991b1b",
-                        }}
-                      >
+                  <tr key={d._id || d.id}>
+                    <td style={{ fontWeight: 800, color: "var(--navy-900)" }}>{d.collegeId}</td>
+                    <td style={{ fontWeight: 600 }}>{d.name}</td>
+                    <td>
+                      <span className={`badge-pill ${d.active ? "badge-success" : "badge-danger"}`}>
                         {d.active ? "Active" : "Inactive"}
                       </span>
                     </td>
-                    <td style={{ padding: "12px", textAlign: "right" }}>
+                    <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
                       <button
                         className="button button-secondary"
-                        style={{ padding: "5px 9px", marginRight: "6px", fontSize: "11px" }}
+                        style={{ padding: "0 10px", minHeight: "32px", marginRight: "6px", fontSize: "11px" }}
                         onClick={() => handleToggleDriverStatus(d._id || d.id, !!d.active)}
                       >
                         {d.active ? "Deactivate" : "Activate"}
                       </button>
                       <button
                         className="button"
-                        style={{ padding: "5px 9px", fontSize: "11px", background: "#fee2e2", color: "#dc2626" }}
+                        style={{
+                          padding: "0 8px",
+                          minHeight: "32px",
+                          background: "var(--danger-50)",
+                          color: "var(--danger-600)",
+                          border: "1px solid var(--danger-100)",
+                        }}
+                        title="Delete Driver Account"
                         onClick={() => handleDeleteDriver(d._id || d.id)}
                       >
-                        <Trash2 size={12} />
+                        <Trash2 size={13} />
                       </button>
                     </td>
                   </tr>
@@ -845,15 +891,15 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
             </button>
           </div>
 
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
+          <div className="table-container">
+            <table className="data-table">
               <thead>
-                <tr style={{ borderBottom: "2px solid #e2e8f0", textAlign: "left", color: "#64748b" }}>
-                  <th style={{ padding: "12px" }}>Route Code</th>
-                  <th style={{ padding: "12px" }}>Route Name</th>
-                  <th style={{ padding: "12px" }}>Ordered Stops Sequence</th>
-                  <th style={{ padding: "12px" }}>Assigned Buses</th>
-                  <th style={{ padding: "12px", textAlign: "right" }}>Actions</th>
+                <tr>
+                  <th>Route Code</th>
+                  <th>Route Name</th>
+                  <th>Ordered Stops Sequence</th>
+                  <th>Assigned Buses</th>
+                  <th style={{ textAlign: "right" }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -864,10 +910,10 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
                   );
 
                   return (
-                    <tr key={rId} style={{ borderBottom: "1px solid #f1f5f9" }}>
-                      <td style={{ padding: "12px", fontWeight: "700", color: "#2563eb" }}>{r.code}</td>
-                      <td style={{ padding: "12px", fontWeight: "600" }}>{r.name}</td>
-                      <td style={{ padding: "12px" }}>
+                    <tr key={rId}>
+                      <td style={{ fontWeight: 800, color: "var(--primary-600)" }}>{r.code}</td>
+                      <td style={{ fontWeight: 700 }}>{r.name}</td>
+                      <td>
                         {Array.isArray(r.stops) && r.stops.length > 0 ? (
                           <div style={{ display: "flex", alignItems: "center", gap: "6px", flexWrap: "wrap" }}>
                             {r.stops.map((s: any, idx: number) => (
@@ -875,10 +921,11 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
                                 key={idx}
                                 style={{
                                   padding: "2px 7px",
-                                  background: "#f1f5f9",
-                                  border: "1px solid #e2e8f0",
-                                  borderRadius: "6px",
+                                  background: "var(--surface-subtle)",
+                                  border: "1px solid var(--border)",
+                                  borderRadius: "var(--radius-xs)",
                                   fontSize: "11px",
+                                  fontWeight: 600,
                                 }}
                               >
                                 {idx + 1}. {s.stopId?.name || s.name || "Stop"}
@@ -886,10 +933,10 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
                             ))}
                           </div>
                         ) : (
-                          <span style={{ color: "#94a3b8" }}>No stops</span>
+                          <span style={{ color: "var(--text-light)" }}>No stops</span>
                         )}
                       </td>
-                      <td style={{ padding: "12px" }}>
+                      <td>
                         {assignedBusesList.length > 0 ? (
                           <div style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}>
                             {assignedBusesList.map((b) => (
@@ -897,11 +944,11 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
                                 key={b.id || (b as any)._id}
                                 style={{
                                   padding: "2px 6px",
-                                  borderRadius: "4px",
-                                  background: "#e0f2fe",
-                                  color: "#0369a1",
+                                  borderRadius: "var(--radius-xs)",
+                                  background: "var(--primary-50)",
+                                  color: "var(--primary-700)",
                                   fontSize: "11px",
-                                  fontWeight: 600,
+                                  fontWeight: 700,
                                 }}
                               >
                                 {b.busNumber}
@@ -909,23 +956,31 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
                             ))}
                           </div>
                         ) : (
-                          <span style={{ color: "#94a3b8", fontSize: "12px" }}>0 buses</span>
+                          <span style={{ color: "var(--text-light)", fontSize: "12px" }}>0 buses</span>
                         )}
                       </td>
-                      <td style={{ padding: "12px", textAlign: "right" }}>
+                      <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
                         <button
                           className="button button-secondary"
-                          style={{ padding: "5px 9px", marginRight: "6px", fontSize: "11px" }}
+                          style={{ padding: "0 8px", minHeight: "32px", marginRight: "6px" }}
                           onClick={() => handleEditRoute(r)}
+                          title="Edit Route"
                         >
-                          <Edit size={12} />
+                          <Edit size={13} />
                         </button>
                         <button
                           className="button"
-                          style={{ padding: "5px 9px", fontSize: "11px", background: "#fee2e2", color: "#dc2626" }}
+                          style={{
+                            padding: "0 8px",
+                            minHeight: "32px",
+                            background: "var(--danger-50)",
+                            color: "var(--danger-600)",
+                            border: "1px solid var(--danger-100)",
+                          }}
                           onClick={() => handleDeleteRoute(rId)}
+                          title="Delete Route"
                         >
-                          <Trash2 size={12} />
+                          <Trash2 size={13} />
                         </button>
                       </td>
                     </tr>
@@ -957,16 +1012,16 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
             </button>
           </div>
 
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
+          <div className="table-container">
+            <table className="data-table">
               <thead>
-                <tr style={{ borderBottom: "2px solid #e2e8f0", textAlign: "left", color: "#64748b" }}>
-                  <th style={{ padding: "12px" }}>Stop Name</th>
-                  <th style={{ padding: "12px" }}>Stop Code</th>
-                  <th style={{ padding: "12px" }}>Latitude</th>
-                  <th style={{ padding: "12px" }}>Longitude</th>
-                  <th style={{ padding: "12px" }}>Shared in Routes</th>
-                  <th style={{ padding: "12px", textAlign: "right" }}>Actions</th>
+                <tr>
+                  <th>Stop Name</th>
+                  <th>Stop Code</th>
+                  <th>Latitude</th>
+                  <th>Longitude</th>
+                  <th>Shared in Routes</th>
+                  <th style={{ textAlign: "right" }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -977,39 +1032,31 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
                   );
 
                   return (
-                    <tr key={sId} style={{ borderBottom: "1px solid #f1f5f9" }}>
-                      <td style={{ padding: "12px", fontWeight: "700" }}>{s.name}</td>
-                      <td style={{ padding: "12px", color: "#64748b" }}>{s.code || "—"}</td>
-                      <td style={{ padding: "12px" }}>{s.latitude.toFixed(5)}</td>
-                      <td style={{ padding: "12px" }}>{s.longitude.toFixed(5)}</td>
-                      <td style={{ padding: "12px" }}>
+                    <tr key={sId}>
+                      <td style={{ fontWeight: 800, color: "var(--navy-900)" }}>{s.name}</td>
+                      <td style={{ color: "var(--text-muted)" }}>{s.code || "—"}</td>
+                      <td style={{ fontFamily: "monospace" }}>{s.latitude.toFixed(5)}</td>
+                      <td style={{ fontFamily: "monospace" }}>{s.longitude.toFixed(5)}</td>
+                      <td>
                         {routesUsingStop.length > 0 ? (
                           <div style={{ display: "flex", gap: "5px", flexWrap: "wrap" }}>
                             {routesUsingStop.map((r: any) => (
                               <span
                                 key={r._id || r.id}
-                                style={{
-                                  padding: "2px 7px",
-                                  borderRadius: "6px",
-                                  background: "#f0fdf4",
-                                  color: "#166534",
-                                  border: "1px solid #bbf7d0",
-                                  fontSize: "11px",
-                                  fontWeight: 600,
-                                }}
+                                className="badge-pill badge-success"
                               >
                                 {r.code}
                               </span>
                             ))}
                           </div>
                         ) : (
-                          <span style={{ color: "#94a3b8", fontSize: "12px" }}>Unused</span>
+                          <span style={{ color: "var(--text-light)", fontSize: "12px" }}>Unused</span>
                         )}
                       </td>
-                      <td style={{ padding: "12px", textAlign: "right" }}>
+                      <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>
                         <button
                           className="button button-secondary"
-                          style={{ padding: "5px 9px", marginRight: "6px", fontSize: "11px" }}
+                          style={{ padding: "0 8px", minHeight: "32px", marginRight: "6px" }}
                           onClick={() => {
                             setEditingItem(s);
                             setStopForm({
@@ -1021,16 +1068,23 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
                             });
                             setModalType("stop");
                           }}
+                          title="Edit Stop"
                         >
-                          <Edit size={12} />
+                          <Edit size={13} />
                         </button>
                         <button
                           className="button"
-                          style={{ padding: "5px 9px", fontSize: "11px", background: "#fee2e2", color: "#dc2626" }}
+                          style={{
+                            padding: "0 8px",
+                            minHeight: "32px",
+                            background: "var(--danger-50)",
+                            color: "var(--danger-600)",
+                            border: "1px solid var(--danger-100)",
+                          }}
                           onClick={() => handleDeleteStop(sId)}
                           title={routesUsingStop.length > 0 ? "Shared by active routes" : "Delete stop"}
                         >
-                          <Trash2 size={12} />
+                          <Trash2 size={13} />
                         </button>
                       </td>
                     </tr>
@@ -1055,39 +1109,39 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
             </button>
           </div>
 
-          <div style={{ overflowX: "auto" }}>
-            <table style={{ width: "100%", borderCollapse: "collapse", fontSize: "13px" }}>
+          <div className="table-container">
+            <table className="data-table">
               <thead>
-                <tr style={{ borderBottom: "2px solid #e2e8f0", textAlign: "left", color: "#64748b" }}>
-                  <th style={{ padding: "12px" }}>Bus</th>
-                  <th style={{ padding: "12px" }}>Driver</th>
-                  <th style={{ padding: "12px" }}>Route</th>
-                  <th style={{ padding: "12px" }}>Live Coordinates</th>
-                  <th style={{ padding: "12px" }}>Speed</th>
-                  <th style={{ padding: "12px" }}>Status</th>
+                <tr>
+                  <th>Bus</th>
+                  <th>Driver</th>
+                  <th>Route</th>
+                  <th>Live Coordinates</th>
+                  <th>Speed</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody>
                 {activeTrips.length === 0 ? (
                   <tr>
-                    <td colSpan={6} style={{ padding: "24px", textAlign: "center", color: "#94a3b8" }}>
+                    <td colSpan={6} style={{ padding: "32px 16px", textAlign: "center", color: "var(--text-muted)" }}>
                       No active trips currently in progress. When drivers start trips, live GPS updates will appear here.
                     </td>
                   </tr>
                 ) : (
                   activeTrips.map((t: any) => (
-                    <tr key={t._id || t.id} style={{ borderBottom: "1px solid #f1f5f9" }}>
-                      <td style={{ padding: "12px", fontWeight: "700" }}>{t.busId?.busNumber || "Bus"}</td>
-                      <td style={{ padding: "12px" }}>{t.driverId?.name || "Driver"}</td>
-                      <td style={{ padding: "12px" }}>{t.routeId?.name || "Route"}</td>
-                      <td style={{ padding: "12px" }}>
+                    <tr key={t._id || t.id}>
+                      <td style={{ fontWeight: 800, color: "var(--navy-900)" }}>{t.busId?.busNumber || "Bus"}</td>
+                      <td style={{ fontWeight: 600 }}>{t.driverId?.name || "Driver"}</td>
+                      <td>{t.routeId?.name || "Route"}</td>
+                      <td style={{ fontFamily: "monospace" }}>
                         {t.currentLocation
                           ? `${t.currentLocation.latitude.toFixed(4)}, ${t.currentLocation.longitude.toFixed(4)}`
                           : "Awaiting Fix"}
                       </td>
-                      <td style={{ padding: "12px" }}>{t.currentLocation?.speed ? `${t.currentLocation.speed} km/h` : "—"}</td>
-                      <td style={{ padding: "12px" }}>
-                        <span style={{ padding: "3px 8px", borderRadius: "12px", fontSize: "11px", fontWeight: 700, backgroundColor: "#dcfce7", color: "#166534" }}>
+                      <td>{t.currentLocation?.speed ? `${t.currentLocation.speed} km/h` : "—"}</td>
+                      <td>
+                        <span className="badge-pill badge-success">
                           LIVE ACTIVE
                         </span>
                       </td>
@@ -1104,42 +1158,47 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
 
       {/* 1. Add / Edit Bus Modal */}
       {modalType === "bus" && (
-        <div className="mobile-scrim" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ background: "#fff", padding: "24px", borderRadius: "14px", width: "100%", maxWidth: "420px" }}>
-            <h3 style={{ margin: "0 0 16px" }}>{editingItem ? "Edit Bus" : "Add New Bus"}</h3>
-            <form onSubmit={handleSaveBus} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              <div>
-                <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>Bus Number</label>
-                <input
-                  required
-                  placeholder="e.g. BUS-002"
-                  value={busForm.busNumber}
-                  onChange={(e) => setBusForm({ ...busForm, busNumber: e.target.value.toUpperCase() })}
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
-                />
+        <div className="modal-backdrop" onClick={() => setModalType(null)}>
+          <div className="modal-card" style={{ maxWidth: "440px" }} onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>{editingItem ? "Edit Bus Details" : "Add New Fleet Bus"}</h3>
+              <button className="icon-button" onClick={() => setModalType(null)}><X size={18} /></button>
+            </div>
+            <form onSubmit={handleSaveBus}>
+              <div className="modal-body">
+                <div className="form-group">
+                  <label>Bus Number</label>
+                  <input
+                    required
+                    className="form-input"
+                    placeholder="e.g. BUS-002"
+                    value={busForm.busNumber}
+                    onChange={(e) => setBusForm({ ...busForm, busNumber: e.target.value.toUpperCase() })}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Registration Number</label>
+                  <input
+                    required
+                    className="form-input"
+                    placeholder="e.g. TN10XY9876"
+                    value={busForm.registrationNumber}
+                    onChange={(e) => setBusForm({ ...busForm, registrationNumber: e.target.value.toUpperCase() })}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Passenger Capacity</label>
+                  <input
+                    type="number"
+                    min="1"
+                    required
+                    className="form-input"
+                    value={busForm.capacity}
+                    onChange={(e) => setBusForm({ ...busForm, capacity: parseInt(e.target.value, 10) || 40 })}
+                  />
+                </div>
               </div>
-              <div>
-                <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>Registration Number</label>
-                <input
-                  required
-                  placeholder="e.g. TN10XY9876"
-                  value={busForm.registrationNumber}
-                  onChange={(e) => setBusForm({ ...busForm, registrationNumber: e.target.value.toUpperCase() })}
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
-                />
-              </div>
-              <div>
-                <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>Capacity</label>
-                <input
-                  type="number"
-                  min="1"
-                  required
-                  value={busForm.capacity}
-                  onChange={(e) => setBusForm({ ...busForm, capacity: parseInt(e.target.value, 10) || 40 })}
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
-                />
-              </div>
-              <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px", marginTop: "12px" }}>
+              <div className="modal-footer">
                 <button type="button" className="button button-secondary" onClick={() => setModalType(null)}>Cancel</button>
                 <button type="submit" className="button button-primary">Save Bus</button>
               </div>
@@ -1150,9 +1209,12 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
 
       {/* 2. Assign Bus Modal */}
       {modalType === "assign-bus" && (
-        <div className="mobile-scrim" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ background: "#fff", padding: "24px", borderRadius: "14px", width: "100%", maxWidth: "460px" }}>
-            <h3 style={{ margin: "0 0 16px" }}>Assign Route & Driver to Bus</h3>
+        <div className="modal-backdrop" onClick={() => setModalType(null)}>
+          <div className="modal-card" style={{ maxWidth: "480px" }} onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Assign Route & Driver to Bus</h3>
+              <button className="icon-button" onClick={() => setModalType(null)}><X size={18} /></button>
+            </div>
             {(() => {
               const currentBus = buses.find((b) => (b.id || (b as any)._id) === assignForm.busId);
               const busHasActiveTrip = activeTrips.some(
@@ -1160,59 +1222,61 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
               );
 
               return (
-                <form onSubmit={handleAssignBusSubmit} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-                  {busHasActiveTrip && (
-                    <div style={{ padding: "10px", background: "#fef3c7", border: "1px solid #fde68a", borderRadius: "8px", color: "#92400e", fontSize: "12px" }}>
-                      ⚠️ Notice: This bus has an active trip in progress. Route cannot be changed until the active trip is completed.
+                <form onSubmit={handleAssignBusSubmit}>
+                  <div className="modal-body">
+                    {busHasActiveTrip && (
+                      <div style={{ padding: "10px 14px", background: "var(--warning-50)", border: "1px solid var(--warning-100)", borderRadius: "var(--radius-sm)", color: "var(--warning-700)", fontSize: "12px", marginBottom: "14px" }}>
+                        ⚠️ Notice: This bus has an active trip in progress. Route cannot be changed until the active trip is completed.
+                      </div>
+                    )}
+
+                    <div style={{ padding: "10px 14px", background: "var(--surface-subtle)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)", marginBottom: "16px" }}>
+                      <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>Target Vehicle</span>
+                      <div style={{ fontSize: "14px", fontWeight: 800, color: "var(--navy-900)" }}>
+                        {currentBus?.busNumber} ({currentBus?.registrationNumber})
+                      </div>
                     </div>
-                  )}
 
-                  <div>
-                    <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>
-                      Selected Bus: <strong>{currentBus?.busNumber}</strong> ({currentBus?.registrationNumber})
-                    </label>
-                  </div>
+                    <div className="form-group">
+                      <label>Assign Route (Multiple buses can share a route)</label>
+                      <select
+                        className="form-select"
+                        value={assignForm.assignedRouteId}
+                        onChange={(e) => setAssignForm({ ...assignForm, assignedRouteId: e.target.value })}
+                      >
+                        <option value="">-- No Route Assigned --</option>
+                        {routes.map((r: any) => {
+                          const rId = r._id || r.id;
+                          const count = buses.filter(
+                            (b: any) => (b.assignedRouteId?._id || b.assignedRouteId?.id || b.assignedRouteId) === rId
+                          ).length;
 
-                  <div>
-                    <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>Assign Route (Multiple buses can share a route)</label>
-                    <select
-                      value={assignForm.assignedRouteId}
-                      onChange={(e) => setAssignForm({ ...assignForm, assignedRouteId: e.target.value })}
-                      style={{ width: "100%", padding: "8px 12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
-                    >
-                      <option value="">-- No Route Assigned --</option>
-                      {routes.map((r: any) => {
-                        const rId = r._id || r.id;
-                        const count = buses.filter(
-                          (b: any) => (b.assignedRouteId?._id || b.assignedRouteId?.id || b.assignedRouteId) === rId
-                        ).length;
+                          return (
+                            <option key={rId} value={rId}>
+                              {r.name} ({r.code}) — {count} {count === 1 ? "bus" : "buses"} assigned
+                            </option>
+                          );
+                        })}
+                      </select>
+                    </div>
 
-                        return (
-                          <option key={rId} value={rId}>
-                            {r.name} ({r.code}) — {count} {count === 1 ? "bus" : "buses"} assigned
+                    <div className="form-group">
+                      <label>Assign Driver</label>
+                      <select
+                        className="form-select"
+                        value={assignForm.assignedDriverId}
+                        onChange={(e) => setAssignForm({ ...assignForm, assignedDriverId: e.target.value })}
+                      >
+                        <option value="">-- No Driver Assigned --</option>
+                        {drivers.map((d: any) => (
+                          <option key={d._id || d.id} value={d._id || d.id}>
+                            {d.name} ({d.collegeId})
                           </option>
-                        );
-                      })}
-                    </select>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-
-                  <div>
-                    <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>Assign Driver</label>
-                    <select
-                      value={assignForm.assignedDriverId}
-                      onChange={(e) => setAssignForm({ ...assignForm, assignedDriverId: e.target.value })}
-                      style={{ width: "100%", padding: "8px 12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
-                    >
-                      <option value="">-- No Driver Assigned --</option>
-                      {drivers.map((d: any) => (
-                        <option key={d._id || d.id} value={d._id || d.id}>
-                          {d.name} ({d.collegeId})
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px", marginTop: "12px" }}>
+                  <div className="modal-footer">
                     <button type="button" className="button button-secondary" onClick={() => setModalType(null)}>Cancel</button>
                     <button type="submit" className="button button-primary">Save Assignment</button>
                   </div>
@@ -1225,43 +1289,48 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
 
       {/* 3. Add Driver Modal */}
       {modalType === "driver" && (
-        <div className="mobile-scrim" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ background: "#fff", padding: "24px", borderRadius: "14px", width: "100%", maxWidth: "420px" }}>
-            <h3 style={{ margin: "0 0 16px" }}>Create Driver Account</h3>
-            <form onSubmit={handleSaveDriver} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              <div>
-                <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>College ID</label>
-                <input
-                  required
-                  placeholder="e.g. DRIVER002"
-                  value={driverForm.collegeId}
-                  onChange={(e) => setDriverForm({ ...driverForm, collegeId: e.target.value.toUpperCase() })}
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
-                />
+        <div className="modal-backdrop" onClick={() => setModalType(null)}>
+          <div className="modal-card" style={{ maxWidth: "440px" }} onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>Create Driver Account</h3>
+              <button className="icon-button" onClick={() => setModalType(null)}><X size={18} /></button>
+            </div>
+            <form onSubmit={handleSaveDriver}>
+              <div className="modal-body">
+                <div className="form-group">
+                  <label>College ID</label>
+                  <input
+                    required
+                    className="form-input"
+                    placeholder="e.g. DRIVER002"
+                    value={driverForm.collegeId}
+                    onChange={(e) => setDriverForm({ ...driverForm, collegeId: e.target.value.toUpperCase() })}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Driver Full Name</label>
+                  <input
+                    required
+                    className="form-input"
+                    placeholder="e.g. Ramesh Kumar"
+                    value={driverForm.name}
+                    onChange={(e) => setDriverForm({ ...driverForm, name: e.target.value })}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Initial Password (min 8 chars)</label>
+                  <input
+                    type="password"
+                    required
+                    minLength={8}
+                    className="form-input"
+                    placeholder="Minimum 8 characters"
+                    value={driverForm.password}
+                    onChange={(e) => setDriverForm({ ...driverForm, password: e.target.value })}
+                  />
+                </div>
               </div>
-              <div>
-                <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>Driver Name</label>
-                <input
-                  required
-                  placeholder="e.g. Ramesh Kumar"
-                  value={driverForm.name}
-                  onChange={(e) => setDriverForm({ ...driverForm, name: e.target.value })}
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
-                />
-              </div>
-              <div>
-                <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>Password</label>
-                <input
-                  type="password"
-                  required
-                  minLength={8}
-                  placeholder="Minimum 8 characters"
-                  value={driverForm.password}
-                  onChange={(e) => setDriverForm({ ...driverForm, password: e.target.value })}
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
-                />
-              </div>
-              <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px", marginTop: "12px" }}>
+              <div className="modal-footer">
                 <button type="button" className="button button-secondary" onClick={() => setModalType(null)}>Cancel</button>
                 <button type="submit" className="button button-primary">Create Driver</button>
               </div>
@@ -1272,61 +1341,68 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
 
       {/* 4. Add/Edit Stop Modal */}
       {modalType === "stop" && (
-        <div className="mobile-scrim" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-          <div style={{ background: "#fff", padding: "24px", borderRadius: "14px", width: "100%", maxWidth: "420px" }}>
-            <h3 style={{ margin: "0 0 16px" }}>{editingItem ? "Edit Stop" : "Add Physical Stop"}</h3>
-            <form onSubmit={handleSaveStop} style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              <div>
-                <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>Stop Name</label>
-                <input
-                  required
-                  placeholder="e.g. Main Gate"
-                  value={stopForm.name}
-                  onChange={(e) => setStopForm({ ...stopForm, name: e.target.value })}
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
-                />
+        <div className="modal-backdrop" onClick={() => setModalType(null)}>
+          <div className="modal-card" style={{ maxWidth: "440px" }} onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>{editingItem ? "Edit Stop Details" : "Add Physical Stop Location"}</h3>
+              <button className="icon-button" onClick={() => setModalType(null)}><X size={18} /></button>
+            </div>
+            <form onSubmit={handleSaveStop}>
+              <div className="modal-body">
+                <div className="form-group">
+                  <label>Stop Name</label>
+                  <input
+                    required
+                    className="form-input"
+                    placeholder="e.g. Main Gate"
+                    value={stopForm.name}
+                    onChange={(e) => setStopForm({ ...stopForm, name: e.target.value })}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Stop Code (optional)</label>
+                  <input
+                    className="form-input"
+                    placeholder="e.g. STOP-01"
+                    value={stopForm.code}
+                    onChange={(e) => setStopForm({ ...stopForm, code: e.target.value.toUpperCase() })}
+                  />
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                  <div className="form-group">
+                    <label>Latitude</label>
+                    <input
+                      type="number"
+                      step="any"
+                      required
+                      className="form-input"
+                      value={stopForm.latitude}
+                      onChange={(e) => setStopForm({ ...stopForm, latitude: parseFloat(e.target.value) || 0 })}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>Longitude</label>
+                    <input
+                      type="number"
+                      step="any"
+                      required
+                      className="form-input"
+                      value={stopForm.longitude}
+                      onChange={(e) => setStopForm({ ...stopForm, longitude: parseFloat(e.target.value) || 0 })}
+                    />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label>Landmark / Notes (optional)</label>
+                  <input
+                    className="form-input"
+                    placeholder="e.g. Opposite to College Library"
+                    value={stopForm.landmark}
+                    onChange={(e) => setStopForm({ ...stopForm, landmark: e.target.value })}
+                  />
+                </div>
               </div>
-              <div>
-                <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>Stop Code (optional)</label>
-                <input
-                  placeholder="e.g. STOP-01"
-                  value={stopForm.code}
-                  onChange={(e) => setStopForm({ ...stopForm, code: e.target.value.toUpperCase() })}
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
-                />
-              </div>
-              <div>
-                <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>Latitude (-90 to 90)</label>
-                <input
-                  type="number"
-                  step="any"
-                  required
-                  value={stopForm.latitude}
-                  onChange={(e) => setStopForm({ ...stopForm, latitude: parseFloat(e.target.value) || 0 })}
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
-                />
-              </div>
-              <div>
-                <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>Longitude (-180 to 180)</label>
-                <input
-                  type="number"
-                  step="any"
-                  required
-                  value={stopForm.longitude}
-                  onChange={(e) => setStopForm({ ...stopForm, longitude: parseFloat(e.target.value) || 0 })}
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
-                />
-              </div>
-              <div>
-                <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>Landmark / Notes (optional)</label>
-                <input
-                  placeholder="e.g. Opposite to College Library"
-                  value={stopForm.landmark}
-                  onChange={(e) => setStopForm({ ...stopForm, landmark: e.target.value })}
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: "8px", border: "1px solid #cbd5e1" }}
-                />
-              </div>
-              <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px", marginTop: "12px" }}>
+              <div className="modal-footer">
                 <button type="button" className="button button-secondary" onClick={() => setModalType(null)}>Cancel</button>
                 <button type="submit" className="button button-primary">Save Stop</button>
               </div>
@@ -1337,359 +1413,352 @@ export function AdminDashboard({ activePage }: AdminDashboardProps = {}) {
 
       {/* 5. Rich Route Builder Modal (Reusable Stops & Sequencing) */}
       {modalType === "route" && (
-        <div className="mobile-scrim" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div className="modal-backdrop" onClick={() => setModalType(null)}>
           <div
-            style={{
-              background: "#fff",
-              padding: "24px",
-              borderRadius: "16px",
-              width: "100%",
-              maxWidth: "600px",
-              maxHeight: "90vh",
-              overflowY: "auto",
-              boxShadow: "0 25px 50px -12px rgba(0,0,0,0.25)",
-            }}
+            className="modal-card"
+            style={{ maxWidth: "620px" }}
+            onClick={(e) => e.stopPropagation()}
           >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-              <h3 style={{ margin: 0, fontSize: "18px" }}>
-                {editingItem ? "Edit Campus Route" : "Create Campus Route with Reusable Stops"}
-              </h3>
+            <div className="modal-header">
+              <h3>{editingItem ? "Edit Campus Route" : "Create Route with Reusable Stops"}</h3>
               <button className="icon-button" onClick={() => setModalType(null)}>
                 <X size={18} />
               </button>
             </div>
 
-            <form onSubmit={handleSaveRoute} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              {/* Route Name & Code */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-                <div>
-                  <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>Route Name</label>
-                  <input
-                    required
-                    placeholder="e.g. SVCET Main Gate Route"
-                    value={routeForm.name}
-                    onChange={(e) => setRouteForm({ ...routeForm, name: e.target.value })}
-                    style={{ width: "100%", padding: "9px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "13px" }}
-                  />
-                </div>
-                <div>
-                  <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>Route Code</label>
-                  <input
-                    required
-                    placeholder="e.g. ROUTE-002"
-                    value={routeForm.code}
-                    onChange={(e) => {
-                      setRouteCodeError("");
-                      setRouteForm({ ...routeForm, code: e.target.value.toUpperCase() });
-                    }}
-                    style={{
-                      width: "100%",
-                      padding: "9px 12px",
-                      borderRadius: "8px",
-                      border: routeCodeError ? "1px solid #ef4444" : "1px solid #cbd5e1",
-                      fontSize: "13px",
-                    }}
-                  />
-                  {routeCodeError && (
-                    <div style={{ color: "#dc2626", fontSize: "11px", marginTop: "4px" }}>{routeCodeError}</div>
-                  )}
-                </div>
-              </div>
-
-              <div>
-                <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "4px" }}>Description (optional)</label>
-                <input
-                  placeholder="e.g. Morning express campus route via Main Gate"
-                  value={routeForm.description}
-                  onChange={(e) => setRouteForm({ ...routeForm, description: e.target.value })}
-                  style={{ width: "100%", padding: "8px 12px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "13px" }}
-                />
-              </div>
-
-              {/* Identical Sequence Notice */}
-              {identicalRouteWarning && (
-                <div style={{ padding: "12px", background: "#fef3c7", border: "1px solid #fde68a", borderRadius: "8px", fontSize: "12px", color: "#92400e" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: 700, marginBottom: "4px" }}>
-                    <AlertTriangle size={15} /> Identical Stop Sequence Found
-                  </div>
-                  <p style={{ margin: "0 0 8px" }}>{identicalRouteWarning.message}</p>
-                  <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer", fontWeight: 600 }}>
+            <form onSubmit={handleSaveRoute}>
+              <div className="modal-body">
+                {/* Route Name & Code */}
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", marginBottom: "16px" }}>
+                  <div className="form-group" style={{ margin: 0 }}>
+                    <label>Route Name</label>
                     <input
-                      type="checkbox"
-                      checked={confirmIdenticalSequence}
-                      onChange={(e) => setConfirmIdenticalSequence(e.target.checked)}
+                      required
+                      className="form-input"
+                      placeholder="e.g. SVCET Main Gate Route"
+                      value={routeForm.name}
+                      onChange={(e) => setRouteForm({ ...routeForm, name: e.target.value })}
                     />
-                    <span>Yes, create this separately as an operational route variation</span>
-                  </label>
+                  </div>
+                  <div className="form-group" style={{ margin: 0 }}>
+                    <label>Route Code</label>
+                    <input
+                      required
+                      className="form-input"
+                      placeholder="e.g. ROUTE-002"
+                      value={routeForm.code}
+                      onChange={(e) => {
+                        setRouteCodeError("");
+                        setRouteForm({ ...routeForm, code: e.target.value.toUpperCase() });
+                      }}
+                      style={{ borderColor: routeCodeError ? "var(--danger-500)" : undefined }}
+                    />
+                    {routeCodeError && (
+                      <div style={{ color: "var(--danger-600)", fontSize: "11px", marginTop: "4px" }}>{routeCodeError}</div>
+                    )}
+                  </div>
                 </div>
-              )}
 
-              {/* Section 1: Ordered Stops on this Route */}
-              <div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
-                  <label style={{ fontSize: "12px", fontWeight: 700, color: "#1e293b" }}>
-                    Ordered Stops on this Route ({routeForm.stops.length})
-                  </label>
-                  <span style={{ fontSize: "11px", color: "#64748b" }}>Use arrows to arrange pickup order</span>
+                <div className="form-group">
+                  <label>Description (optional)</label>
+                  <input
+                    className="form-input"
+                    placeholder="e.g. Morning express campus route via Main Gate"
+                    value={routeForm.description}
+                    onChange={(e) => setRouteForm({ ...routeForm, description: e.target.value })}
+                  />
                 </div>
 
-                <div
-                  style={{
-                    maxHeight: "180px",
-                    overflowY: "auto",
-                    border: "1px solid #e2e8f0",
-                    borderRadius: "10px",
-                    padding: "8px",
-                    background: "#f8fafc",
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "6px",
-                  }}
-                >
-                  {routeForm.stops.length === 0 ? (
-                    <div style={{ padding: "20px", textAlign: "center", color: "#94a3b8", fontSize: "12px" }}>
-                      No stops added yet. Select existing stops below or add a new stop.
+                {/* Identical Sequence Notice */}
+                {identicalRouteWarning && (
+                  <div style={{ padding: "12px 14px", background: "var(--warning-50)", border: "1px solid var(--warning-100)", borderRadius: "var(--radius-sm)", fontSize: "12px", color: "var(--warning-700)", marginBottom: "16px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "6px", fontWeight: 700, marginBottom: "4px" }}>
+                      <AlertTriangle size={15} /> Identical Stop Sequence Found
                     </div>
-                  ) : (
-                    routeForm.stops.map((s, idx) => {
-                      const stopDetail = stops.find((st: any) => (st._id || st.id) === s.stopId);
+                    <p style={{ margin: "0 0 8px" }}>{identicalRouteWarning.message}</p>
+                    <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer", fontWeight: 600 }}>
+                      <input
+                        type="checkbox"
+                        checked={confirmIdenticalSequence}
+                        onChange={(e) => setConfirmIdenticalSequence(e.target.checked)}
+                      />
+                      <span>Yes, create this separately as an operational route variation</span>
+                    </label>
+                  </div>
+                )}
+
+                {/* Section 1: Ordered Stops on this Route */}
+                <div style={{ marginBottom: "16px" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "6px" }}>
+                    <label style={{ fontSize: "12px", fontWeight: 700, color: "var(--navy-900)" }}>
+                      Ordered Stops on this Route ({routeForm.stops.length})
+                    </label>
+                    <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>Use arrows to arrange pickup order</span>
+                  </div>
+
+                  <div
+                    style={{
+                      maxHeight: "180px",
+                      overflowY: "auto",
+                      border: "1px solid var(--border)",
+                      borderRadius: "var(--radius-md)",
+                      padding: "8px",
+                      background: "var(--surface-subtle)",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "6px",
+                    }}
+                  >
+                    {routeForm.stops.length === 0 ? (
+                      <div style={{ padding: "20px", textAlign: "center", color: "var(--text-light)", fontSize: "12px" }}>
+                        No stops added yet. Select existing stops below or register a new stop.
+                      </div>
+                    ) : (
+                      routeForm.stops.map((s, idx) => {
+                        const stopDetail = stops.find((st: any) => (st._id || st.id) === s.stopId);
+                        return (
+                          <div
+                            key={`${s.stopId}-${idx}`}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              padding: "8px 12px",
+                              background: "var(--surface)",
+                              borderRadius: "var(--radius-sm)",
+                              border: "1px solid var(--border)",
+                              fontSize: "12px",
+                            }}
+                          >
+                            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                              <span
+                                style={{
+                                  width: "22px",
+                                  height: "22px",
+                                  borderRadius: "50%",
+                                  background: "var(--primary-600)",
+                                  color: "#fff",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  justifyContent: "center",
+                                  fontSize: "11px",
+                                  fontWeight: 700,
+                                }}
+                              >
+                                {idx + 1}
+                              </span>
+                              <div>
+                                <strong style={{ color: "var(--navy-900)" }}>{stopDetail?.name || "Stop"}</strong>
+                                <span style={{ color: "var(--text-muted)", marginLeft: "6px", fontSize: "11px" }}>
+                                  ({stopDetail?.latitude?.toFixed(4)}, {stopDetail?.longitude?.toFixed(4)})
+                                </span>
+                              </div>
+                            </div>
+
+                            <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                              <button
+                                type="button"
+                                className="icon-button"
+                                disabled={idx === 0}
+                                onClick={() => moveStopUp(idx)}
+                                title="Move Earlier"
+                                style={{ minWidth: "28px", minHeight: "28px", padding: "4px", opacity: idx === 0 ? 0.3 : 1 }}
+                              >
+                                <ArrowUp size={14} />
+                              </button>
+                              <button
+                                type="button"
+                                className="icon-button"
+                                disabled={idx === routeForm.stops.length - 1}
+                                onClick={() => moveStopDown(idx)}
+                                title="Move Later"
+                                style={{ minWidth: "28px", minHeight: "28px", padding: "4px", opacity: idx === routeForm.stops.length - 1 ? 0.3 : 1 }}
+                              >
+                                <ArrowDown size={14} />
+                              </button>
+                              <button
+                                type="button"
+                                className="icon-button"
+                                onClick={() => removeStopFromRoute(idx)}
+                                title="Remove from Route"
+                                style={{ minWidth: "28px", minHeight: "28px", padding: "4px", color: "var(--danger-600)" }}
+                              >
+                                <X size={14} />
+                              </button>
+                            </div>
+                          </div>
+                        );
+                      })
+                    )}
+                  </div>
+                </div>
+
+                {/* Section 2: Reusable Existing Stops Selector */}
+                <div style={{ marginBottom: "16px" }}>
+                  <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "6px", color: "var(--navy-900)" }}>
+                    Add Existing Campus Stops (Reuses Physical Location)
+                  </label>
+                  <div style={{ position: "relative", marginBottom: "8px" }}>
+                    <Search size={15} style={{ position: "absolute", left: "10px", top: "50%", transform: "translateY(-50%)", color: "var(--text-light)" }} />
+                    <input
+                      placeholder="Search by stop name or code..."
+                      value={routeStopSearch}
+                      onChange={(e) => setRouteStopSearch(e.target.value)}
+                      className="form-input"
+                      style={{ paddingLeft: "32px", fontSize: "12px", height: "36px" }}
+                    />
+                  </div>
+
+                  <div
+                    style={{
+                      maxHeight: "130px",
+                      overflowY: "auto",
+                      border: "1px solid var(--border)",
+                      borderRadius: "var(--radius-sm)",
+                      padding: "6px",
+                      display: "grid",
+                      gridTemplateColumns: "1fr 1fr",
+                      gap: "6px",
+                    }}
+                  >
+                    {filteredAvailableStops.map((st: any) => {
+                      const stId = st._id || st.id;
+                      const countInRoute = routeForm.stops.filter((s) => s.stopId === stId).length;
+
                       return (
                         <div
-                          key={`${s.stopId}-${idx}`}
+                          key={stId}
                           style={{
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "space-between",
-                            padding: "8px 12px",
-                            background: "#ffffff",
-                            borderRadius: "8px",
-                            border: "1px solid #cbd5e1",
-                            fontSize: "12px",
+                            padding: "6px 8px",
+                            background: countInRoute > 0 ? "var(--primary-50)" : "var(--surface)",
+                            border: countInRoute > 0 ? "1px solid var(--primary-200)" : "1px solid var(--border)",
+                            borderRadius: "var(--radius-xs)",
+                            fontSize: "11px",
                           }}
                         >
-                          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                            <span
-                              style={{
-                                width: "22px",
-                                height: "22px",
-                                borderRadius: "50%",
-                                background: "#2563eb",
-                                color: "#fff",
-                                display: "flex",
-                                alignItems: "center",
-                                justifyContent: "center",
-                                fontSize: "11px",
-                                fontWeight: 700,
+                          <div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                            <strong>{st.name}</strong>
+                            {st.code && <span style={{ color: "var(--text-muted)", marginLeft: "4px" }}>({st.code})</span>}
+                          </div>
+                          <button
+                            type="button"
+                            className="button button-secondary"
+                            style={{ padding: "0 6px", minHeight: "24px", fontSize: "10px", flexShrink: 0 }}
+                            onClick={() => addStopToRoute(stId)}
+                          >
+                            + Add
+                          </button>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Section 3: Quick Add Stop Inline */}
+                <div style={{ borderTop: "1px solid var(--border)", paddingTop: "12px" }}>
+                  {!showQuickAddStop ? (
+                    <button
+                      type="button"
+                      className="button button-secondary"
+                      onClick={() => setShowQuickAddStop(true)}
+                      style={{ width: "100%", justifyContent: "center", fontSize: "12px" }}
+                    >
+                      + Register Genuinely New Stop Location
+                    </button>
+                  ) : (
+                    <div style={{ padding: "14px", background: "var(--surface-subtle)", borderRadius: "var(--radius-md)", border: "1px solid var(--border)" }}>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "10px" }}>
+                        <strong style={{ fontSize: "12px", color: "var(--navy-900)" }}>Register & Add New Stop</strong>
+                        <button type="button" className="icon-button" onClick={() => setShowQuickAddStop(false)} style={{ padding: "2px", minWidth: "24px", minHeight: "24px" }}>
+                          <X size={15} />
+                        </button>
+                      </div>
+
+                      {proximityWarning && (
+                        <div style={{ padding: "10px 12px", background: "var(--danger-50)", border: "1px solid var(--danger-100)", borderRadius: "var(--radius-sm)", fontSize: "12px", color: "var(--danger-700)", marginBottom: "10px" }}>
+                          <div style={{ fontWeight: 700, marginBottom: "4px" }}>⚠️ Proximity / Duplicate Alert</div>
+                          <p style={{ margin: "0 0 8px" }}>{proximityWarning.message}</p>
+                          <div style={{ display: "flex", gap: "8px" }}>
+                            <button
+                              type="button"
+                              className="button button-primary"
+                              style={{ padding: "0 8px", minHeight: "28px", fontSize: "11px" }}
+                              onClick={() => {
+                                addStopToRoute(proximityWarning.existingStop.id);
+                                setShowQuickAddStop(false);
+                                setProximityWarning(null);
                               }}
                             >
-                              {idx + 1}
-                            </span>
-                            <div>
-                              <strong>{stopDetail?.name || "Stop"}</strong>
-                              <span style={{ color: "#64748b", marginLeft: "6px", fontSize: "11px" }}>
-                                ({stopDetail?.latitude?.toFixed(4)}, {stopDetail?.longitude?.toFixed(4)})
-                              </span>
-                            </div>
-                          </div>
-
-                          <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                            <button
-                              type="button"
-                              className="icon-button"
-                              disabled={idx === 0}
-                              onClick={() => moveStopUp(idx)}
-                              title="Move Stop Earlier in Sequence"
-                              style={{ padding: "4px", opacity: idx === 0 ? 0.3 : 1 }}
-                            >
-                              <ArrowUp size={15} />
+                              Reuse '{proximityWarning.existingStop.name}'
                             </button>
                             <button
                               type="button"
-                              className="icon-button"
-                              disabled={idx === routeForm.stops.length - 1}
-                              onClick={() => moveStopDown(idx)}
-                              title="Move Stop Later in Sequence"
-                              style={{ padding: "4px", opacity: idx === routeForm.stops.length - 1 ? 0.3 : 1 }}
+                              className="button button-secondary"
+                              style={{ padding: "0 8px", minHeight: "28px", fontSize: "11px" }}
+                              onClick={() => void handleVerifyAndQuickAddStop(true)}
                             >
-                              <ArrowDown size={15} />
-                            </button>
-                            <button
-                              type="button"
-                              className="icon-button"
-                              onClick={() => removeStopFromRoute(idx)}
-                              title="Remove from Route (does not delete stop from database)"
-                              style={{ padding: "4px", color: "#dc2626" }}
-                            >
-                              <X size={15} />
+                              Create Distinct Stop
                             </button>
                           </div>
                         </div>
-                      );
-                    })
+                      )}
+
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "8px" }}>
+                        <input
+                          placeholder="Stop Name (e.g. Science Block)"
+                          value={quickStopForm.name}
+                          onChange={(e) => setQuickStopForm({ ...quickStopForm, name: e.target.value })}
+                          className="form-input"
+                          style={{ fontSize: "12px", height: "36px" }}
+                        />
+                        <input
+                          placeholder="Stop Code (optional)"
+                          value={quickStopForm.code}
+                          onChange={(e) => setQuickStopForm({ ...quickStopForm, code: e.target.value.toUpperCase() })}
+                          className="form-input"
+                          style={{ fontSize: "12px", height: "36px" }}
+                        />
+                      </div>
+
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "8px" }}>
+                        <input
+                          type="number"
+                          step="any"
+                          placeholder="Latitude"
+                          value={quickStopForm.latitude}
+                          onChange={(e) => setQuickStopForm({ ...quickStopForm, latitude: parseFloat(e.target.value) || 0 })}
+                          className="form-input"
+                          style={{ fontSize: "12px", height: "36px" }}
+                        />
+                        <input
+                          type="number"
+                          step="any"
+                          placeholder="Longitude"
+                          value={quickStopForm.longitude}
+                          onChange={(e) => setQuickStopForm({ ...quickStopForm, longitude: parseFloat(e.target.value) || 0 })}
+                          className="form-input"
+                          style={{ fontSize: "12px", height: "36px" }}
+                        />
+                      </div>
+
+                      <button
+                        type="button"
+                        className="button button-primary"
+                        onClick={() => void handleVerifyAndQuickAddStop(false)}
+                        style={{ width: "100%", justifyContent: "center", fontSize: "12px", minHeight: "36px" }}
+                      >
+                        Verify & Add Stop to Route
+                      </button>
+                    </div>
                   )}
                 </div>
               </div>
 
-              {/* Section 2: Reusable Existing Stops Selector */}
-              <div>
-                <label style={{ fontSize: "12px", fontWeight: 700, display: "block", marginBottom: "6px" }}>
-                  Add Existing Campus Stops (Reuses Physical Location)
-                </label>
-                <div style={{ position: "relative", marginBottom: "8px" }}>
-                  <Search size={15} style={{ position: "absolute", left: "10px", top: "50%", transform: "translateY(-50%)", color: "#94a3b8" }} />
-                  <input
-                    placeholder="Search by stop name or code..."
-                    value={routeStopSearch}
-                    onChange={(e) => setRouteStopSearch(e.target.value)}
-                    style={{ width: "100%", padding: "7px 10px 7px 32px", borderRadius: "8px", border: "1px solid #cbd5e1", fontSize: "12px" }}
-                  />
-                </div>
-
-                <div
-                  style={{
-                    maxHeight: "130px",
-                    overflowY: "auto",
-                    border: "1px solid #cbd5e1",
-                    borderRadius: "8px",
-                    padding: "6px",
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: "6px",
-                  }}
-                >
-                  {filteredAvailableStops.map((st: any) => {
-                    const stId = st._id || st.id;
-                    const countInRoute = routeForm.stops.filter((s) => s.stopId === stId).length;
-
-                    return (
-                      <div
-                        key={stId}
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "space-between",
-                          padding: "6px 8px",
-                          background: countInRoute > 0 ? "#eff6ff" : "#ffffff",
-                          border: countInRoute > 0 ? "1px solid #93c5fd" : "1px solid #e2e8f0",
-                          borderRadius: "6px",
-                          fontSize: "11px",
-                        }}
-                      >
-                        <div style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                          <strong>{st.name}</strong>
-                          {st.code && <span style={{ color: "#64748b", marginLeft: "4px" }}>({st.code})</span>}
-                        </div>
-                        <button
-                          type="button"
-                          className="button button-secondary"
-                          style={{ padding: "2px 6px", fontSize: "10px", flexShrink: 0 }}
-                          onClick={() => addStopToRoute(stId)}
-                        >
-                          + Add
-                        </button>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Section 3: Quick Add Stop Inline (with duplicate detection) */}
-              <div style={{ borderTop: "1px solid #e2e8f0", paddingTop: "12px" }}>
-                {!showQuickAddStop ? (
-                  <button
-                    type="button"
-                    className="button button-secondary"
-                    onClick={() => setShowQuickAddStop(true)}
-                    style={{ width: "100%", justifyContent: "center", fontSize: "12px" }}
-                  >
-                    + Register Genuinely New Stop Location
-                  </button>
-                ) : (
-                  <div style={{ padding: "12px", background: "#f8fafc", borderRadius: "10px", border: "1px solid #e2e8f0" }}>
-                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
-                      <strong style={{ fontSize: "12px" }}>Register & Add New Stop</strong>
-                      <button type="button" className="icon-button" onClick={() => setShowQuickAddStop(false)}>
-                        <X size={15} />
-                      </button>
-                    </div>
-
-                    {proximityWarning && (
-                      <div style={{ padding: "10px", background: "#fef2f2", border: "1px solid #fecaca", borderRadius: "8px", fontSize: "12px", color: "#991b1b", marginBottom: "10px" }}>
-                        <div style={{ fontWeight: 700, marginBottom: "4px" }}>⚠️ Proximity / Duplicate Alert</div>
-                        <p style={{ margin: "0 0 8px" }}>{proximityWarning.message}</p>
-                        <div style={{ display: "flex", gap: "8px" }}>
-                          <button
-                            type="button"
-                            className="button button-primary"
-                            style={{ padding: "4px 8px", fontSize: "11px" }}
-                            onClick={() => {
-                              addStopToRoute(proximityWarning.existingStop.id);
-                              setShowQuickAddStop(false);
-                              setProximityWarning(null);
-                            }}
-                          >
-                            Reuse '{proximityWarning.existingStop.name}'
-                          </button>
-                          <button
-                            type="button"
-                            className="button button-secondary"
-                            style={{ padding: "4px 8px", fontSize: "11px" }}
-                            onClick={() => void handleVerifyAndQuickAddStop(true)}
-                          >
-                            Create Distinct Stop
-                          </button>
-                        </div>
-                      </div>
-                    )}
-
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "8px" }}>
-                      <input
-                        placeholder="Stop Name (e.g. Science Block)"
-                        value={quickStopForm.name}
-                        onChange={(e) => setQuickStopForm({ ...quickStopForm, name: e.target.value })}
-                        style={{ padding: "6px 10px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "12px" }}
-                      />
-                      <input
-                        placeholder="Stop Code (optional)"
-                        value={quickStopForm.code}
-                        onChange={(e) => setQuickStopForm({ ...quickStopForm, code: e.target.value.toUpperCase() })}
-                        style={{ padding: "6px 10px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "12px" }}
-                      />
-                    </div>
-
-                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", marginBottom: "8px" }}>
-                      <input
-                        type="number"
-                        step="any"
-                        placeholder="Latitude"
-                        value={quickStopForm.latitude}
-                        onChange={(e) => setQuickStopForm({ ...quickStopForm, latitude: parseFloat(e.target.value) || 0 })}
-                        style={{ padding: "6px 10px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "12px" }}
-                      />
-                      <input
-                        type="number"
-                        step="any"
-                        placeholder="Longitude"
-                        value={quickStopForm.longitude}
-                        onChange={(e) => setQuickStopForm({ ...quickStopForm, longitude: parseFloat(e.target.value) || 0 })}
-                        style={{ padding: "6px 10px", borderRadius: "6px", border: "1px solid #cbd5e1", fontSize: "12px" }}
-                      />
-                    </div>
-
-                    <button
-                      type="button"
-                      className="button button-primary"
-                      onClick={() => void handleVerifyAndQuickAddStop(false)}
-                      style={{ width: "100%", justifyContent: "center", fontSize: "12px", padding: "6px" }}
-                    >
-                      Verify & Add Stop to Route
-                    </button>
-                  </div>
-                )}
-              </div>
-
               {/* Action Buttons */}
-              <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px", marginTop: "8px" }}>
+              <div className="modal-footer">
                 <button type="button" className="button button-secondary" onClick={() => setModalType(null)}>Cancel</button>
                 <button type="submit" className="button button-primary">
                   {editingItem ? "Update Route" : "Save Route"}

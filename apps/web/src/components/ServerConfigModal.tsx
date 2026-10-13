@@ -66,7 +66,7 @@ export const ServerConfigModal: React.FC<ServerConfigModalProps> = ({
         const data = await res.json().catch(() => ({}));
         setTestingStatus("success");
         setTestResultMsg(
-          `✓ Connected! Server responded: ${data.service || "SVCET API"} (DB: ${data.database || "connected"})`,
+          `Connected! Server: ${data.service || "SVCET API"} (DB: ${data.database || "connected"})`,
         );
       } else {
         setTestingStatus("error");
@@ -109,93 +109,70 @@ export const ServerConfigModal: React.FC<ServerConfigModalProps> = ({
   };
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 9999,
-        background: "rgba(15, 23, 42, 0.75)",
-        backdropFilter: "blur(6px)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "16px",
-      }}
-      onClick={onClose}
-    >
-      <div
-        style={{
-          background: "#ffffff",
-          borderRadius: "16px",
-          width: "100%",
-          maxWidth: "480px",
-          boxShadow: "0 20px 40px rgba(0,0,0,0.25)",
-          overflow: "hidden",
-          border: "1px solid #e2e8f0",
-        }}
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="modal-backdrop" onClick={onClose}>
+      <div className="modal-card" style={{ maxWidth: "500px" }} onClick={(e) => e.stopPropagation()}>
         {/* Modal Header */}
-        <div
-          style={{
-            padding: "18px 20px",
-            background: "#1e3a8a",
-            color: "#ffffff",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
+        <div className="modal-header">
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            <Server size={20} color="#93c5fd" />
+            <div
+              style={{
+                width: "36px",
+                height: "36px",
+                borderRadius: "var(--radius-sm)",
+                background: "var(--primary-50)",
+                color: "var(--primary-600)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <Server size={18} />
+            </div>
             <div>
-              <div style={{ fontSize: "16px", fontWeight: 700 }}>Server Connection Settings</div>
-              <div style={{ fontSize: "11px", color: "#bfdbfe" }}>
-                Configure SVCET bus tracker API endpoint
-              </div>
+              <h3 style={{ margin: 0, fontSize: "16px", fontWeight: 800, color: "var(--navy-900)" }}>
+                Server Connection Settings
+              </h3>
+              <p style={{ margin: 0, fontSize: "11px", color: "var(--text-muted)" }}>
+                Configure SVCET Bus Tracker API backend
+              </p>
             </div>
           </div>
           <button
+            className="icon-button"
             onClick={onClose}
-            style={{
-              background: "transparent",
-              border: "none",
-              color: "#ffffff",
-              cursor: "pointer",
-              padding: "4px",
-              borderRadius: "6px",
-            }}
+            aria-label="Close settings dialog"
           >
-            <X size={20} />
+            <X size={18} />
           </button>
         </div>
 
         {/* Modal Body */}
-        <div style={{ padding: "20px" }}>
+        <div className="modal-body">
           {/* Platform Status Badge */}
           <div
             style={{
               display: "flex",
               alignItems: "center",
               gap: "8px",
-              padding: "8px 12px",
-              background: "#f1f5f9",
-              borderRadius: "8px",
+              padding: "10px 14px",
+              background: "var(--surface-subtle)",
+              borderRadius: "var(--radius-md)",
               fontSize: "12px",
-              color: "#334155",
+              color: "var(--navy-800)",
               marginBottom: "16px",
+              border: "1px solid var(--border)",
             }}
           >
             {currentConfig.isNative ? (
               <>
-                <Smartphone size={15} color="#2563eb" />
+                <Smartphone size={16} color="#2563eb" style={{ flexShrink: 0 }} />
                 <span>
-                  <strong>Android APK Mode:</strong> Requires a network IP or cloud URL (localhost points to phone).
+                  <strong>Android APK Mode:</strong> Requires a network IP or cloud URL (localhost points to your phone).
                 </span>
               </>
             ) : (
               <>
-                <Globe size={15} color="#059669" />
+                <Globe size={16} color="#059669" style={{ flexShrink: 0 }} />
                 <span>
                   <strong>Web Browser Mode:</strong> Running on {window.location.host}
                 </span>
@@ -207,12 +184,12 @@ export const ServerConfigModal: React.FC<ServerConfigModalProps> = ({
           {currentConfig.warning && (
             <div
               style={{
-                padding: "8px 12px",
-                background: "#fffbeb",
-                border: "1px solid #fef08a",
-                borderRadius: "8px",
+                padding: "10px 14px",
+                background: "var(--warning-50)",
+                border: "1px solid var(--warning-100)",
+                borderRadius: "var(--radius-md)",
                 fontSize: "11px",
-                color: "#854d0e",
+                color: "var(--warning-700)",
                 marginBottom: "16px",
               }}
             >
@@ -221,20 +198,12 @@ export const ServerConfigModal: React.FC<ServerConfigModalProps> = ({
           )}
 
           {/* URL Input */}
-          <div style={{ marginBottom: "16px" }}>
-            <label
-              style={{
-                display: "block",
-                fontSize: "13px",
-                fontWeight: 600,
-                color: "#1e293b",
-                marginBottom: "6px",
-              }}
-            >
-              API Base URL
-            </label>
+          <div className="form-group">
+            <label htmlFor="api-endpoint-input">API Base URL</label>
             <input
+              id="api-endpoint-input"
               type="text"
+              className="form-input"
               value={inputUrl}
               onChange={(e) => {
                 setInputUrl(e.target.value);
@@ -242,27 +211,18 @@ export const ServerConfigModal: React.FC<ServerConfigModalProps> = ({
                 setTestResultMsg("");
               }}
               placeholder="https://your-api.onrender.com or http://10.x.x.x:4000"
-              style={{
-                width: "100%",
-                padding: "10px 12px",
-                border: "1px solid #cbd5e1",
-                borderRadius: "8px",
-                fontSize: "13px",
-                fontFamily: "monospace",
-                boxSizing: "border-box",
-                outline: "none",
-              }}
+              style={{ fontFamily: "monospace", fontSize: "12px" }}
             />
             {errorMsg && (
-              <div style={{ color: "#dc2626", fontSize: "11px", marginTop: "4px" }}>
+              <div style={{ color: "var(--danger-600)", fontSize: "11px", marginTop: "4px" }}>
                 {errorMsg}
               </div>
             )}
           </div>
 
-          {/* Quick Preset Buttons */}
+          {/* Quick Presets */}
           <div style={{ marginBottom: "18px" }}>
-            <div style={{ fontSize: "11px", fontWeight: 700, color: "#64748b", marginBottom: "8px", textTransform: "uppercase" }}>
+            <div style={{ fontSize: "11px", fontWeight: 700, color: "var(--text-muted)", marginBottom: "8px", textTransform: "uppercase" }}>
               Quick Presets
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
@@ -277,10 +237,10 @@ export const ServerConfigModal: React.FC<ServerConfigModalProps> = ({
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  padding: "8px 12px",
-                  background: "#f8fafc",
-                  border: "1px solid #e2e8f0",
-                  borderRadius: "8px",
+                  padding: "10px 14px",
+                  background: "var(--surface-subtle)",
+                  border: "1px solid var(--border)",
+                  borderRadius: "var(--radius-sm)",
                   cursor: "pointer",
                   fontSize: "12px",
                   textAlign: "left",
@@ -288,9 +248,9 @@ export const ServerConfigModal: React.FC<ServerConfigModalProps> = ({
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                   <Wifi size={14} color="#2563eb" />
-                  <span>Computer Wi-Fi IP (for phone on same Wi-Fi)</span>
+                  <span style={{ fontWeight: 600, color: "var(--navy-900)" }}>Computer Wi-Fi IP</span>
                 </div>
-                <code style={{ fontSize: "11px", color: "#2563eb" }}>{LOCAL_LAN_API_FALLBACK}</code>
+                <code style={{ fontSize: "11px", color: "var(--primary-600)" }}>{LOCAL_LAN_API_FALLBACK}</code>
               </button>
 
               <button
@@ -304,10 +264,10 @@ export const ServerConfigModal: React.FC<ServerConfigModalProps> = ({
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  padding: "8px 12px",
-                  background: "#f8fafc",
-                  border: "1px solid #e2e8f0",
-                  borderRadius: "8px",
+                  padding: "10px 14px",
+                  background: "var(--surface-subtle)",
+                  border: "1px solid var(--border)",
+                  borderRadius: "var(--radius-sm)",
                   cursor: "pointer",
                   fontSize: "12px",
                   textAlign: "left",
@@ -315,7 +275,7 @@ export const ServerConfigModal: React.FC<ServerConfigModalProps> = ({
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                   <Radio size={14} color="#7c3aed" />
-                  <span>Render Cloud API Example</span>
+                  <span style={{ fontWeight: 600, color: "var(--navy-900)" }}>Render Cloud Backend</span>
                 </div>
                 <code style={{ fontSize: "11px", color: "#7c3aed" }}>https://*.onrender.com</code>
               </button>
@@ -331,10 +291,10 @@ export const ServerConfigModal: React.FC<ServerConfigModalProps> = ({
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  padding: "8px 12px",
-                  background: "#f8fafc",
-                  border: "1px solid #e2e8f0",
-                  borderRadius: "8px",
+                  padding: "10px 14px",
+                  background: "var(--surface-subtle)",
+                  border: "1px solid var(--border)",
+                  borderRadius: "var(--radius-sm)",
                   cursor: "pointer",
                   fontSize: "12px",
                   textAlign: "left",
@@ -342,7 +302,7 @@ export const ServerConfigModal: React.FC<ServerConfigModalProps> = ({
               >
                 <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                   <Server size={14} color="#475569" />
-                  <span>Localhost (PC Browser only)</span>
+                  <span style={{ fontWeight: 600, color: "var(--navy-900)" }}>Localhost (Browser only)</span>
                 </div>
                 <code style={{ fontSize: "11px", color: "#475569" }}>http://localhost:4000</code>
               </button>
@@ -350,90 +310,67 @@ export const ServerConfigModal: React.FC<ServerConfigModalProps> = ({
           </div>
 
           {/* Test Connection Button & Result */}
-          <div style={{ marginBottom: "20px" }}>
+          <div style={{ marginBottom: "8px" }}>
             <button
               type="button"
               disabled={testingStatus === "testing"}
               onClick={handleTestConnection}
+              className="button button-secondary"
               style={{
                 width: "100%",
-                padding: "9px 14px",
-                background: "#f1f5f9",
-                border: "1px solid #cbd5e1",
-                borderRadius: "8px",
-                fontSize: "12px",
+                minHeight: "40px",
                 fontWeight: 700,
-                color: "#1e293b",
-                cursor: testingStatus === "testing" ? "not-allowed" : "pointer",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
               }}
             >
-              <RefreshCw size={14} className={testingStatus === "testing" ? "animate-spin" : ""} />
+              <RefreshCw size={14} className={testingStatus === "testing" ? "spin" : ""} />
               <span>{testingStatus === "testing" ? "Pinging Server..." : "Test Connection"}</span>
             </button>
 
             {testResultMsg && (
               <div
                 style={{
-                  marginTop: "8px",
-                  padding: "8px 12px",
-                  borderRadius: "8px",
+                  marginTop: "10px",
+                  padding: "10px 14px",
+                  borderRadius: "var(--radius-sm)",
                   fontSize: "12px",
                   display: "flex",
                   alignItems: "flex-start",
-                  gap: "6px",
-                  background: testingStatus === "success" ? "#f0fdf4" : "#fef2f2",
-                  color: testingStatus === "success" ? "#166534" : "#991b1b",
-                  border: `1px solid ${testingStatus === "success" ? "#bbf7d0" : "#fecaca"}`,
+                  gap: "8px",
+                  background: testingStatus === "success" ? "var(--success-50)" : "var(--danger-50)",
+                  color: testingStatus === "success" ? "var(--success-700)" : "var(--danger-700)",
+                  border: `1px solid ${testingStatus === "success" ? "var(--success-100)" : "var(--danger-100)"}`,
                 }}
               >
-                {testingStatus === "success" && <CheckCircle2 size={16} color="#16a34a" style={{ flexShrink: 0, marginTop: "1px" }} />}
+                {testingStatus === "success" && (
+                  <CheckCircle2 size={16} color="#16a34a" style={{ flexShrink: 0, marginTop: "1px" }} />
+                )}
                 <span>{testResultMsg}</span>
               </div>
             )}
           </div>
+        </div>
 
-          {/* Modal Action Buttons */}
-          <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
-            <button
-              type="button"
-              onClick={handleReset}
-              style={{
-                padding: "9px 14px",
-                background: "transparent",
-                border: "1px solid #cbd5e1",
-                borderRadius: "8px",
-                fontSize: "12px",
-                fontWeight: 600,
-                color: "#64748b",
-                cursor: "pointer",
-              }}
-            >
-              Reset Default
-            </button>
-            <button
-              type="button"
-              onClick={handleSave}
-              style={{
-                padding: "9px 18px",
-                background: "#16a34a",
-                border: "none",
-                borderRadius: "8px",
-                fontSize: "12px",
-                fontWeight: 700,
-                color: "#ffffff",
-                cursor: "pointer",
-                boxShadow: "0 2px 6px rgba(22, 163, 74, 0.3)",
-              }}
-            >
-              Save & Apply
-            </button>
-          </div>
+        {/* Modal Actions */}
+        <div className="modal-footer">
+          <button
+            type="button"
+            onClick={handleReset}
+            className="button button-secondary"
+          >
+            Reset Default
+          </button>
+          <button
+            type="button"
+            onClick={handleSave}
+            className="button button-primary"
+            style={{ fontWeight: 700 }}
+          >
+            Save & Apply
+          </button>
         </div>
       </div>
     </div>
   );
 };
+
+export default ServerConfigModal;

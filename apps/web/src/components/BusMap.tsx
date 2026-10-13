@@ -10,7 +10,7 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { LocateFixed, MapPin } from "lucide-react";
+import { LocateFixed, MapPin, Navigation } from "lucide-react";
 import type { Location, Stop } from "../types";
 
 // Default coordinates centered on SVCET campus (13.143, 79.908)
@@ -42,52 +42,62 @@ function createStopIcon(sequence: number, _name?: string) {
     className: "custom-stop-marker",
     html: `
       <div style="
-        background: #1e3a8a;
+        background: #0f172a;
         color: #ffffff;
-        width: 26px;
-        height: 26px;
+        width: 24px;
+        height: 24px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         font-size: 11px;
-        font-weight: 700;
+        font-weight: 800;
         border: 2px solid #ffffff;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        box-shadow: 0 3px 8px rgba(15, 23, 42, 0.35);
       ">${sequence}</div>
     `,
-    iconSize: [26, 26],
-    iconAnchor: [13, 13],
+    iconSize: [24, 24],
+    iconAnchor: [12, 12],
     popupAnchor: [0, -14],
   });
 }
 
-// Custom HTML icon for Bus
+// Custom HTML icon for Live Bus
 function createBusIcon(busNumber: string, isLive: boolean) {
-  const color = isLive ? "#2563eb" : "#64748b";
+  const bgColor = isLive ? "#2563eb" : "#475569";
+  const statusDot = isLive ? "#22c55e" : "#94a3b8";
+
   return L.divIcon({
     className: "custom-bus-marker",
     html: `
       <div style="
-        background: ${color};
-        color: white;
-        padding: 5px 9px;
-        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: ${bgColor};
+        color: #ffffff;
+        padding: 5px 10px;
+        border-radius: 9999px;
         font-size: 11px;
         font-weight: 800;
-        display: flex;
-        align-items: center;
-        gap: 5px;
+        letter-spacing: 0.2px;
         border: 2px solid #ffffff;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.3);
         white-space: nowrap;
       ">
-        <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:${isLive ? "#4ade80" : "#fca5a5"};"></span>
+        <span style="
+          display: inline-block;
+          width: 7px;
+          height: 7px;
+          border-radius: 50%;
+          background: ${statusDot};
+          box-shadow: 0 0 0 2px rgba(255,255,255,0.4);
+        "></span>
         <span>${busNumber}</span>
       </div>
     `,
-    iconSize: [80, 28],
-    iconAnchor: [40, 14],
+    iconSize: [84, 28],
+    iconAnchor: [42, 14],
     popupAnchor: [0, -16],
   });
 }
@@ -140,10 +150,10 @@ export function BusMap({
         zoom={14}
         scrollWheelZoom
         className="bus-map"
-        style={{ width: "100%", height: "100%", minHeight: large ? "460px" : "320px", borderRadius: "12px" }}
+        style={{ width: "100%", height: "100%", borderRadius: "var(--radius-md)" }}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
@@ -154,16 +164,16 @@ export function BusMap({
           <Polyline
             positions={polylinePositions}
             pathOptions={{
-              color: "#3b82f6",
+              color: "#2563eb",
               weight: 5,
-              opacity: 0.75,
+              opacity: 0.8,
               dashArray: "1, 10",
               lineJoin: "round",
             }}
           />
         )}
 
-        {/* Stops */}
+        {/* Route Stops */}
         {stops.map((stop, index) => {
           if (
             typeof stop.latitude !== "number" ||
@@ -180,13 +190,15 @@ export function BusMap({
               icon={createStopIcon(seq, stop.name)}
             >
               <Popup>
-                <div style={{ padding: "4px" }}>
-                  <strong style={{ fontSize: "13px", color: "#1e3a8a" }}>
-                    Stop {seq}: {stop.name}
-                  </strong>
-                  <br />
-                  <span style={{ fontSize: "11px", color: "#64748b" }}>
-                    {stop.latitude.toFixed(4)}, {stop.longitude.toFixed(4)}
+                <div style={{ padding: "4px 2px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
+                    <MapPin size={14} color="#2563eb" />
+                    <strong style={{ fontSize: "13px", color: "var(--navy-900)" }}>
+                      Stop {seq}: {stop.name}
+                    </strong>
+                  </div>
+                  <span style={{ fontSize: "11px", color: "var(--text-muted)", fontFamily: "monospace" }}>
+                    {stop.latitude.toFixed(5)}, {stop.longitude.toFixed(5)}
                   </span>
                 </div>
               </Popup>
@@ -194,11 +206,11 @@ export function BusMap({
           );
         })}
 
-        {/* Bus Marker */}
+        {/* Live Bus Marker */}
         {hasGps && (
           <>
-            {/* Accuracy radius ring */}
-            {location.accuracy && location.accuracy > 0 && location.accuracy < 200 && (
+            {/* Accuracy ring */}
+            {location.accuracy && location.accuracy > 0 && location.accuracy < 250 && (
               <CircleMarker
                 center={busPosition}
                 radius={Math.min(location.accuracy, 40)}
@@ -206,7 +218,7 @@ export function BusMap({
                   color: isLive ? "#2563eb" : "#94a3b8",
                   fillColor: isLive ? "#3b82f6" : "#cbd5e1",
                   fillOpacity: 0.15,
-                  weight: 1,
+                  weight: 1.5,
                 }}
               />
             )}
@@ -216,29 +228,32 @@ export function BusMap({
               icon={createBusIcon(busNumber, isLive)}
             >
               <Popup>
-                <div style={{ padding: "5px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "4px" }}>
-                    <strong style={{ fontSize: "14px", color: "#1e3a8a" }}>{busNumber}</strong>
+                <div style={{ padding: "4px 2px" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "6px" }}>
+                    <strong style={{ fontSize: "14px", color: "var(--navy-900)" }}>{busNumber}</strong>
                     <span
                       style={{
-                        fontSize: "10px",
+                        fontSize: "9px",
+                        fontWeight: 800,
+                        textTransform: "uppercase",
                         padding: "2px 6px",
-                        borderRadius: "10px",
+                        borderRadius: "var(--radius-full)",
                         backgroundColor: isLive ? "#dcfce7" : "#f1f5f9",
                         color: isLive ? "#166534" : "#64748b",
-                        fontWeight: 700,
                       }}
                     >
                       {isLive ? "LIVE GPS" : "OFFLINE / IDLE"}
                     </span>
                   </div>
+
                   {location.speed !== undefined && (
-                    <div style={{ fontSize: "12px", color: "#334155" }}>
+                    <div style={{ fontSize: "12px", color: "var(--navy-800)", marginBottom: "3px" }}>
                       Speed: <strong>{location.speed} km/h</strong>
                     </div>
                   )}
+
                   {location.recordedAt && (
-                    <div style={{ fontSize: "11px", color: "#64748b", marginTop: "4px" }}>
+                    <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>
                       Updated: {new Date(location.recordedAt).toLocaleTimeString()}
                     </div>
                   )}
@@ -249,45 +264,45 @@ export function BusMap({
         )}
       </MapContainer>
 
-      {/* Recenter Button Overlay */}
+      {/* Recenter Floating Button */}
       {hasGps && (
         <button
           className="button button-white"
           style={{
             position: "absolute",
-            bottom: "20px",
-            right: "20px",
-            zIndex: 1000,
+            bottom: "16px",
+            right: "16px",
+            zIndex: 450,
             padding: "8px 14px",
-            borderRadius: "20px",
-            boxShadow: "0 4px 12px rgba(0,0,0,0.18)",
+            borderRadius: "var(--radius-full)",
+            boxShadow: "var(--shadow-md)",
             display: "flex",
             alignItems: "center",
             gap: "6px",
             fontSize: "12px",
-            fontWeight: 600,
+            fontWeight: 700,
           }}
           onClick={() => setCenterTrigger((prev) => prev + 1)}
-          title="Center on Bus"
+          title="Recenter Map on Bus Location"
         >
-          <LocateFixed size={16} />
-          Center Bus
+          <LocateFixed size={15} color="#2563eb" />
+          <span>Center Bus</span>
         </button>
       )}
 
       {!hasGps && (
         <div className="map-empty">
           <span className="map-empty-icon">
-            <MapPin size={22} />
+            <Navigation size={22} />
           </span>
-          <strong>Waiting for live bus GPS</strong>
-          <span>The map will show the moving bus marker when a trip starts.</span>
+          <strong>Awaiting Live Bus Telemetry</strong>
+          <span>The vehicle position marker will stream in real time when a driver starts the trip.</span>
         </div>
       )}
 
       <div className="map-attribution-note">
         <span className={`live-dot ${isLive ? "" : "live-badge-muted"}`} />
-        OpenStreetMap
+        <span>OpenStreetMap Live</span>
       </div>
     </div>
   );

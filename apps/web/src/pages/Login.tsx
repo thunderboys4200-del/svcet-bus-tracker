@@ -143,7 +143,6 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
       setSuccessMessage(
         "Student account created successfully! Signing in to your student portal...",
       );
-      // Automatically log student in
       setTimeout(() => {
         onLoginSuccess(response.user, response.token);
       }, 700);
@@ -161,24 +160,24 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        backgroundImage: `linear-gradient(135deg, rgba(15, 23, 42, 0.82) 0%, rgba(15, 23, 42, 0.88) 50%, rgba(30, 58, 138, 0.85) 100%), url("/svcet-building.png")`,
+        backgroundImage: `linear-gradient(135deg, rgba(15, 23, 42, 0.88) 0%, rgba(15, 23, 42, 0.82) 50%, rgba(30, 58, 138, 0.82) 100%), url("/svcet-building.png")`,
         backgroundSize: "cover",
         backgroundPosition: "center center",
         backgroundRepeat: "no-repeat",
         backgroundAttachment: "fixed",
-        padding: "32px 16px",
+        padding: "24px 16px",
       }}
     >
       <div
         style={{
           width: "100%",
-          maxWidth: "490px",
-          background: "rgba(255, 255, 255, 0.96)",
-          backdropFilter: "blur(16px)",
-          WebkitBackdropFilter: "blur(16px)",
-          borderRadius: "24px",
-          boxShadow: "0 25px 60px -12px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(255, 255, 255, 0.4)",
-          padding: "36px 32px",
+          maxWidth: "480px",
+          background: "rgba(255, 255, 255, 0.98)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          borderRadius: "var(--radius-xl)",
+          boxShadow: "0 25px 60px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.6)",
+          padding: "32px 28px",
           boxSizing: "border-box",
         }}
       >
@@ -192,14 +191,13 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
               alignItems: "center",
               gap: "6px",
               padding: "5px 10px",
-              borderRadius: "8px",
-              border: "1px solid #e2e8f0",
-              background: "#f8fafc",
-              color: "#334155",
+              borderRadius: "var(--radius-sm)",
+              border: "1px solid var(--border)",
+              background: "var(--surface-subtle)",
+              color: "var(--navy-700)",
               fontSize: "12px",
               fontWeight: 600,
               cursor: "pointer",
-              transition: "all 0.15s ease",
             }}
             title="Configure Server API Connection URL"
           >
@@ -208,20 +206,20 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
           </button>
         </div>
 
-        {/* College & Project Branding Header with Official Logo */}
-        <div style={{ textAlign: "center", marginBottom: "26px" }}>
+        {/* Branding Header with Official Logo */}
+        <div style={{ textAlign: "center", marginBottom: "22px" }}>
           <div
             style={{
-              width: "88px",
-              height: "88px",
+              width: "82px",
+              height: "82px",
               borderRadius: "50%",
               background: "#ffffff",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
-              margin: "0 auto 14px",
-              padding: "4px",
-              boxShadow: "0 10px 25px rgba(0, 0, 0, 0.2), 0 0 0 3px #f59e0b, 0 0 0 6px rgba(245, 158, 11, 0.25)",
+              margin: "0 auto 12px",
+              padding: "3px",
+              boxShadow: "0 8px 20px rgba(0, 0, 0, 0.15), 0 0 0 3px #f59e0b, 0 0 0 6px rgba(245, 158, 11, 0.2)",
               boxSizing: "border-box",
             }}
           >
@@ -240,8 +238,8 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             style={{
               fontSize: "22px",
               fontWeight: "800",
-              color: "#0f172a",
-              margin: "0 0 6px",
+              color: "var(--navy-900)",
+              margin: "0 0 4px",
               letterSpacing: "-0.5px",
             }}
           >
@@ -250,8 +248,8 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
           <p
             style={{
               margin: 0,
-              fontSize: "13px",
-              color: "#64748b",
+              fontSize: "12px",
+              color: "var(--text-muted)",
               fontWeight: 600,
             }}
           >
@@ -264,11 +262,11 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: "6px",
-            background: "#f1f5f9",
-            padding: "5px",
-            borderRadius: "12px",
-            marginBottom: "24px",
+            gap: "4px",
+            background: "var(--surface-subtle)",
+            padding: "4px",
+            borderRadius: "var(--radius-md)",
+            marginBottom: "20px",
           }}
         >
           <button
@@ -280,10 +278,10 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             }}
             style={{
               padding: "10px",
-              borderRadius: "9px",
+              borderRadius: "var(--radius-sm)",
               border: "none",
               background: activeTab === "login" ? "#ffffff" : "transparent",
-              color: activeTab === "login" ? "#1e3a8a" : "#64748b",
+              color: activeTab === "login" ? "var(--primary-700)" : "var(--text-muted)",
               fontWeight: 700,
               fontSize: "13px",
               display: "flex",
@@ -291,8 +289,8 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
               justifyContent: "center",
               gap: "8px",
               cursor: "pointer",
-              boxShadow: activeTab === "login" ? "0 2px 6px rgba(0,0,0,0.08)" : "none",
-              transition: "all 0.15s ease",
+              boxShadow: activeTab === "login" ? "var(--shadow-sm)" : "none",
+              transition: "all var(--transition-fast)",
             }}
           >
             <LogIn size={15} />
@@ -308,10 +306,10 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             }}
             style={{
               padding: "10px",
-              borderRadius: "9px",
+              borderRadius: "var(--radius-sm)",
               border: "none",
               background: activeTab === "register" ? "#ffffff" : "transparent",
-              color: activeTab === "register" ? "#1e3a8a" : "#64748b",
+              color: activeTab === "register" ? "var(--primary-700)" : "var(--text-muted)",
               fontWeight: 700,
               fontSize: "13px",
               display: "flex",
@@ -319,8 +317,8 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
               justifyContent: "center",
               gap: "8px",
               cursor: "pointer",
-              boxShadow: activeTab === "register" ? "0 2px 6px rgba(0,0,0,0.08)" : "none",
-              transition: "all 0.15s ease",
+              boxShadow: activeTab === "register" ? "var(--shadow-sm)" : "none",
+              transition: "all var(--transition-fast)",
             }}
           >
             <UserPlus size={15} />
@@ -334,16 +332,16 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             role="alert"
             style={{
               padding: "12px 14px",
-              borderRadius: "10px",
-              background: "#fef2f2",
-              border: "1px solid #fecaca",
-              color: "#b91c1c",
+              borderRadius: "var(--radius-md)",
+              background: "var(--danger-50)",
+              border: "1px solid var(--danger-100)",
+              color: "var(--danger-700)",
               fontSize: "13px",
               display: "flex",
               flexDirection: "column",
               gap: "8px",
-              marginBottom: "20px",
-              lineHeight: 1.4,
+              marginBottom: "18px",
+              lineHeight: 1.45,
             }}
           >
             <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
@@ -356,10 +354,10 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   type="button"
                   onClick={() => setIsServerModalOpen(true)}
                   style={{
-                    background: "#dc2626",
+                    background: "var(--danger-600)",
                     color: "#ffffff",
                     border: "none",
-                    borderRadius: "6px",
+                    borderRadius: "var(--radius-xs)",
                     padding: "6px 12px",
                     fontSize: "12px",
                     fontWeight: 600,
@@ -383,16 +381,16 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             role="status"
             style={{
               padding: "12px 14px",
-              borderRadius: "10px",
-              background: "#f0fdf4",
-              border: "1px solid #bbf7d0",
-              color: "#15803d",
+              borderRadius: "var(--radius-md)",
+              background: "var(--success-50)",
+              border: "1px solid var(--success-100)",
+              color: "var(--success-700)",
               fontSize: "13px",
               display: "flex",
               alignItems: "flex-start",
               gap: "10px",
-              marginBottom: "20px",
-              lineHeight: 1.4,
+              marginBottom: "18px",
+              lineHeight: 1.45,
             }}
           >
             <CheckCircle2 size={18} style={{ flexShrink: 0, marginTop: "1px" }} />
@@ -413,7 +411,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   display: "block",
                   fontSize: "12px",
                   fontWeight: "700",
-                  color: "#334155",
+                  color: "var(--navy-800)",
                   marginBottom: "6px",
                 }}
               >
@@ -427,7 +425,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                     left: "12px",
                     top: "50%",
                     transform: "translateY(-50%)",
-                    color: "#94a3b8",
+                    color: "var(--text-light)",
                   }}
                 />
                 <input
@@ -440,12 +438,14 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   onChange={(e) => setLoginIdentifier(e.target.value.toUpperCase())}
                   style={{
                     width: "100%",
-                    padding: "11px 12px 11px 36px",
-                    borderRadius: "10px",
-                    border: "1px solid #cbd5e1",
+                    height: "44px",
+                    padding: "0 14px 0 38px",
+                    borderRadius: "var(--radius-md)",
+                    border: "1px solid var(--border)",
                     fontSize: "13px",
                     boxSizing: "border-box",
                     textTransform: "uppercase",
+                    outline: "none",
                   }}
                 />
               </div>
@@ -458,7 +458,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   display: "block",
                   fontSize: "12px",
                   fontWeight: "700",
-                  color: "#334155",
+                  color: "var(--navy-800)",
                   marginBottom: "6px",
                 }}
               >
@@ -472,7 +472,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                     left: "12px",
                     top: "50%",
                     transform: "translateY(-50%)",
-                    color: "#94a3b8",
+                    color: "var(--text-light)",
                   }}
                 />
                 <input
@@ -484,11 +484,13 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   onChange={(e) => setLoginPassword(e.target.value)}
                   style={{
                     width: "100%",
-                    padding: "11px 40px 11px 36px",
-                    borderRadius: "10px",
-                    border: "1px solid #cbd5e1",
+                    height: "44px",
+                    padding: "0 40px 0 38px",
+                    borderRadius: "var(--radius-md)",
+                    border: "1px solid var(--border)",
                     fontSize: "13px",
                     boxSizing: "border-box",
+                    outline: "none",
                   }}
                 />
                 <button
@@ -503,8 +505,8 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                     transform: "translateY(-50%)",
                     background: "none",
                     border: "none",
-                    padding: "4px",
-                    color: "#64748b",
+                    padding: "6px",
+                    color: "var(--text-muted)",
                     cursor: "pointer",
                     display: "flex",
                     alignItems: "center",
@@ -522,20 +524,10 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
               className="button button-primary"
               style={{
                 width: "100%",
-                padding: "13px",
-                borderRadius: "10px",
+                height: "46px",
                 fontSize: "14px",
                 fontWeight: "700",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
-                marginTop: "8px",
-                background: "#2563eb",
-                color: "#ffffff",
-                border: "none",
-                cursor: loading ? "not-allowed" : "pointer",
-                boxShadow: "0 4px 12px rgba(37, 99, 235, 0.25)",
+                marginTop: "4px",
               }}
             >
               {loading ? (
@@ -556,19 +548,18 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             onSubmit={handleRegisterSubmit}
             style={{ display: "flex", flexDirection: "column", gap: "14px" }}
           >
-            {/* Role scope restriction notice */}
             <div
               style={{
                 padding: "8px 12px",
-                borderRadius: "8px",
-                background: "#eff6ff",
-                border: "1px solid #bfdbfe",
+                borderRadius: "var(--radius-sm)",
+                background: "var(--primary-50)",
+                border: "1px solid var(--primary-100)",
                 fontSize: "11px",
-                color: "#1e40af",
-                lineHeight: 1.4,
+                color: "var(--primary-800)",
+                lineHeight: 1.45,
                 display: "flex",
                 alignItems: "center",
-                gap: "6px",
+                gap: "8px",
               }}
             >
               <GraduationCap size={16} style={{ flexShrink: 0 }} />
@@ -585,7 +576,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   display: "block",
                   fontSize: "12px",
                   fontWeight: "700",
-                  color: "#334155",
+                  color: "var(--navy-800)",
                   marginBottom: "4px",
                 }}
               >
@@ -596,10 +587,10 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   size={15}
                   style={{
                     position: "absolute",
-                    left: "11px",
+                    left: "12px",
                     top: "50%",
                     transform: "translateY(-50%)",
-                    color: "#94a3b8",
+                    color: "var(--text-light)",
                   }}
                 />
                 <input
@@ -611,11 +602,13 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   onChange={(e) => setRegName(e.target.value)}
                   style={{
                     width: "100%",
-                    padding: "9px 12px 9px 34px",
-                    borderRadius: "8px",
-                    border: "1px solid #cbd5e1",
+                    height: "40px",
+                    padding: "0 12px 0 36px",
+                    borderRadius: "var(--radius-sm)",
+                    border: "1px solid var(--border)",
                     fontSize: "13px",
                     boxSizing: "border-box",
+                    outline: "none",
                   }}
                 />
               </div>
@@ -629,7 +622,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   display: "block",
                   fontSize: "12px",
                   fontWeight: "700",
-                  color: "#334155",
+                  color: "var(--navy-800)",
                   marginBottom: "4px",
                 }}
               >
@@ -640,10 +633,10 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   size={15}
                   style={{
                     position: "absolute",
-                    left: "11px",
+                    left: "12px",
                     top: "50%",
                     transform: "translateY(-50%)",
-                    color: "#94a3b8",
+                    color: "var(--text-light)",
                   }}
                 />
                 <input
@@ -655,12 +648,14 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   onChange={(e) => setRegCollegeId(e.target.value.toUpperCase())}
                   style={{
                     width: "100%",
-                    padding: "9px 12px 9px 34px",
-                    borderRadius: "8px",
-                    border: "1px solid #cbd5e1",
+                    height: "40px",
+                    padding: "0 12px 0 36px",
+                    borderRadius: "var(--radius-sm)",
+                    border: "1px solid var(--border)",
                     fontSize: "13px",
                     boxSizing: "border-box",
                     textTransform: "uppercase",
+                    outline: "none",
                   }}
                 />
               </div>
@@ -675,7 +670,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                     display: "block",
                     fontSize: "11px",
                     fontWeight: "700",
-                    color: "#334155",
+                    color: "var(--navy-800)",
                     marginBottom: "4px",
                   }}
                 >
@@ -687,12 +682,14 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   onChange={(e) => setRegDepartment(e.target.value)}
                   style={{
                     width: "100%",
-                    padding: "9px 8px",
-                    borderRadius: "8px",
-                    border: "1px solid #cbd5e1",
+                    height: "40px",
+                    padding: "0 8px",
+                    borderRadius: "var(--radius-sm)",
+                    border: "1px solid var(--border)",
                     fontSize: "12px",
                     boxSizing: "border-box",
-                    background: "#ffffff",
+                    background: "var(--surface)",
+                    outline: "none",
                   }}
                 >
                   {DEPARTMENTS.map((dept) => (
@@ -710,7 +707,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                     display: "block",
                     fontSize: "11px",
                     fontWeight: "700",
-                    color: "#334155",
+                    color: "var(--navy-800)",
                     marginBottom: "4px",
                   }}
                 >
@@ -722,12 +719,14 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   onChange={(e) => setRegYear(e.target.value)}
                   style={{
                     width: "100%",
-                    padding: "9px 8px",
-                    borderRadius: "8px",
-                    border: "1px solid #cbd5e1",
+                    height: "40px",
+                    padding: "0 8px",
+                    borderRadius: "var(--radius-sm)",
+                    border: "1px solid var(--border)",
                     fontSize: "12px",
                     boxSizing: "border-box",
-                    background: "#ffffff",
+                    background: "var(--surface)",
+                    outline: "none",
                   }}
                 >
                   {YEARS.map((y) => (
@@ -747,7 +746,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   display: "block",
                   fontSize: "12px",
                   fontWeight: "700",
-                  color: "#334155",
+                  color: "var(--navy-800)",
                   marginBottom: "4px",
                 }}
               >
@@ -758,10 +757,10 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   size={15}
                   style={{
                     position: "absolute",
-                    left: "11px",
+                    left: "12px",
                     top: "50%",
                     transform: "translateY(-50%)",
-                    color: "#94a3b8",
+                    color: "var(--text-light)",
                   }}
                 />
                 <input
@@ -772,11 +771,13 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   onChange={(e) => setRegPhone(e.target.value)}
                   style={{
                     width: "100%",
-                    padding: "9px 12px 9px 34px",
-                    borderRadius: "8px",
-                    border: "1px solid #cbd5e1",
+                    height: "40px",
+                    padding: "0 12px 0 36px",
+                    borderRadius: "var(--radius-sm)",
+                    border: "1px solid var(--border)",
                     fontSize: "13px",
                     boxSizing: "border-box",
+                    outline: "none",
                   }}
                 />
               </div>
@@ -790,7 +791,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   display: "block",
                   fontSize: "12px",
                   fontWeight: "700",
-                  color: "#334155",
+                  color: "var(--navy-800)",
                   marginBottom: "4px",
                 }}
               >
@@ -801,10 +802,10 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   size={15}
                   style={{
                     position: "absolute",
-                    left: "11px",
+                    left: "12px",
                     top: "50%",
                     transform: "translateY(-50%)",
-                    color: "#94a3b8",
+                    color: "var(--text-light)",
                   }}
                 />
                 <input
@@ -816,11 +817,13 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   onChange={(e) => setRegPassword(e.target.value)}
                   style={{
                     width: "100%",
-                    padding: "9px 36px 9px 34px",
-                    borderRadius: "8px",
-                    border: "1px solid #cbd5e1",
+                    height: "40px",
+                    padding: "0 38px 0 36px",
+                    borderRadius: "var(--radius-sm)",
+                    border: "1px solid var(--border)",
                     fontSize: "13px",
                     boxSizing: "border-box",
+                    outline: "none",
                   }}
                 />
                 <button
@@ -835,7 +838,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                     background: "none",
                     border: "none",
                     padding: "4px",
-                    color: "#64748b",
+                    color: "var(--text-muted)",
                     cursor: "pointer",
                   }}
                 >
@@ -852,7 +855,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   display: "block",
                   fontSize: "12px",
                   fontWeight: "700",
-                  color: "#334155",
+                  color: "var(--navy-800)",
                   marginBottom: "4px",
                 }}
               >
@@ -863,10 +866,10 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   size={15}
                   style={{
                     position: "absolute",
-                    left: "11px",
+                    left: "12px",
                     top: "50%",
                     transform: "translateY(-50%)",
-                    color: "#94a3b8",
+                    color: "var(--text-light)",
                   }}
                 />
                 <input
@@ -878,11 +881,13 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                   onChange={(e) => setRegConfirmPassword(e.target.value)}
                   style={{
                     width: "100%",
-                    padding: "9px 36px 9px 34px",
-                    borderRadius: "8px",
-                    border: "1px solid #cbd5e1",
+                    height: "40px",
+                    padding: "0 38px 0 36px",
+                    borderRadius: "var(--radius-sm)",
+                    border: "1px solid var(--border)",
                     fontSize: "13px",
                     boxSizing: "border-box",
+                    outline: "none",
                   }}
                 />
                 <button
@@ -897,7 +902,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
                     background: "none",
                     border: "none",
                     padding: "4px",
-                    color: "#64748b",
+                    color: "var(--text-muted)",
                     cursor: "pointer",
                   }}
                 >
@@ -910,23 +915,17 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
             <button
               type="submit"
               disabled={loading}
-              className="button button-primary"
+              className="button"
               style={{
                 width: "100%",
-                padding: "12px",
-                borderRadius: "10px",
+                height: "46px",
                 fontSize: "14px",
                 fontWeight: "700",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "8px",
-                marginTop: "6px",
-                background: "#16a34a",
+                marginTop: "4px",
+                background: "var(--success-600)",
                 color: "#ffffff",
-                border: "none",
-                cursor: loading ? "not-allowed" : "pointer",
-                boxShadow: "0 4px 12px rgba(22, 163, 74, 0.25)",
+                border: "1px solid var(--success-700)",
+                boxShadow: "0 2px 8px rgba(22, 163, 74, 0.25)",
               }}
             >
               {loading ? (
@@ -946,12 +945,13 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
           style={{
             marginTop: "20px",
             padding: "12px 14px",
-            background: "#f0fdf4",
-            border: "1px solid #bbf7d0",
-            borderRadius: "10px",
+            background: "var(--success-50)",
+            border: "1px solid var(--success-100)",
+            borderRadius: "var(--radius-md)",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
+            flexWrap: "wrap",
             gap: "10px",
           }}
         >
@@ -960,8 +960,8 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
               style={{
                 width: "36px",
                 height: "36px",
-                borderRadius: "8px",
-                background: "#16a34a",
+                borderRadius: "var(--radius-sm)",
+                background: "var(--success-600)",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
@@ -973,25 +973,24 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
               📱
             </div>
             <div style={{ textAlign: "left" }}>
-              <div style={{ fontSize: "12px", fontWeight: 700, color: "#166534" }}>
+              <div style={{ fontSize: "12px", fontWeight: 700, color: "var(--success-700)" }}>
                 SVCET Android App (.APK)
               </div>
-              <div style={{ fontSize: "11px", color: "#15803d" }}>
-                Direct Mobile Install • 6.9 MB
+              <div style={{ fontSize: "11px", color: "var(--success-600)" }}>
+                Direct Mobile Install • Production Ready
               </div>
             </div>
           </div>
           <a
             href="/svcet-bus-tracker.apk"
             download="svcet-bus-tracker.apk"
+            className="button"
             style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "6px",
-              padding: "7px 12px",
-              background: "#16a34a",
+              padding: "0 12px",
+              minHeight: "34px",
+              background: "var(--success-600)",
               color: "#ffffff",
-              borderRadius: "8px",
+              borderRadius: "var(--radius-sm)",
               fontSize: "12px",
               fontWeight: 700,
               textDecoration: "none",
@@ -999,7 +998,7 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
               whiteSpace: "nowrap",
             }}
           >
-            <Download size={14} />
+            <Download size={13} />
             <span>Download APK</span>
           </a>
         </div>
@@ -1007,18 +1006,18 @@ export const Login: React.FC<LoginProps> = ({ onLoginSuccess }) => {
         {/* Security and Trust Footer */}
         <div
           style={{
-            marginTop: "20px",
-            paddingTop: "16px",
-            borderTop: "1px solid #f1f5f9",
+            marginTop: "18px",
+            paddingTop: "14px",
+            borderTop: "1px solid var(--surface-subtle)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
             gap: "6px",
-            fontSize: "12px",
-            color: "#64748b",
+            fontSize: "11px",
+            color: "var(--text-muted)",
           }}
         >
-          <ShieldCheck size={16} color="#15803d" />
+          <ShieldCheck size={15} color="#16a34a" />
           <span>MongoDB Atlas Authentication • JWT Session</span>
         </div>
 

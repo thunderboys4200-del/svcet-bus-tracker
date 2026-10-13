@@ -75,37 +75,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {isOpen && (
         <button
           className="mobile-scrim"
-          aria-label="Close navigation"
+          aria-label="Close navigation overlay"
           onClick={onClose}
         />
       )}
 
-      <aside className={`sidebar ${isOpen ? "sidebar-open" : ""}`}>
-        {/* Brand */}
+      <aside className={`sidebar ${isOpen ? "sidebar-open" : ""}`} aria-label="Sidebar Navigation">
+        {/* Brand Header */}
         <div className="brand">
-          <div
-            className="brand-logo"
-            style={{
-              background: "#ffffff",
-              padding: "2px",
-              borderRadius: "50%",
-              overflow: "hidden",
-              border: "2px solid #f59e0b",
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.15)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
+          <div className="brand-logo">
             <img
               src="/svcet-logo.png"
               alt="SVCET College Logo"
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "contain",
-                borderRadius: "50%",
-              }}
             />
           </div>
           <div className="brand-copy">
@@ -114,10 +95,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
           <button
             className="icon-button sidebar-close"
-            aria-label="Close menu"
+            aria-label="Close sidebar menu"
             onClick={onClose}
           >
-            <X size={19} />
+            <X size={20} />
           </button>
         </div>
 
@@ -126,18 +107,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
           <span className="campus-chip-dot" />
           <span>
             {activeRole === "admin"
-              ? "Admin Control Center"
+              ? "Admin Fleet Console"
               : activeRole === "driver"
-                ? "Driver Fleet Portal"
-                : "Campus Student Transport"}
+                ? "Driver Operations Hub"
+                : "Student Transit Portal"}
           </span>
         </div>
 
         {/* Section Label */}
-        <div className="sidebar-section-label">WORKSPACE</div>
+        <div className="sidebar-section-label">Fleet Navigation</div>
 
         {/* Navigation links */}
-        <nav className="sidebar-nav" aria-label="Main navigation">
+        <nav className="sidebar-nav" aria-label="Main menu">
           {navItems.map(({ id, label, icon: Icon, badge }) => (
             <button
               key={id}
@@ -147,10 +128,20 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 onClose();
               }}
             >
-              <Icon size={19} strokeWidth={1.9} />
+              <Icon size={18} strokeWidth={2} />
               <span>{label}</span>
               {badge !== undefined && (
-                <span className="nav-alert-dot" style={{ background: "#2563eb", color: "#fff", padding: "1px 6px", fontSize: "10px", borderRadius: "10px", height: "auto", width: "auto" }}>
+                <span
+                  style={{
+                    marginLeft: "auto",
+                    background: "var(--primary-600)",
+                    color: "#ffffff",
+                    padding: "2px 7px",
+                    fontSize: "10px",
+                    fontWeight: 700,
+                    borderRadius: "var(--radius-full)",
+                  }}
+                >
                   {badge}
                 </span>
               )}
@@ -158,14 +149,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
           ))}
         </nav>
 
-        {/* Bottom Support & Profile */}
+        {/* Bottom Support & User Profile */}
         <div className="sidebar-bottom">
           <div className="support-card">
             <div className="support-icon">
-              <ShieldCheck size={20} />
+              <ShieldCheck size={18} />
             </div>
-            <strong>SVCET Transport</strong>
-            <p>Sri Venkateswara College of Engineering and Technology</p>
+            <strong>SVCET Campus Transport</strong>
+            <p>Sri Venkateswara College of Engineering & Technology</p>
           </div>
 
           <div className="sidebar-profile">
@@ -174,16 +165,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
             <div className="profile-info">
               <strong>{currentUser ? currentUser.name : "User"}</strong>
-              <span>{currentUser ? `${currentUser.collegeId} (${currentUser.role})` : ""}</span>
+              <span>{currentUser ? `${currentUser.collegeId} • ${currentUser.role}` : ""}</span>
             </div>
             {currentUser && (
               <button
                 className="icon-button"
                 onClick={onLogout}
-                title="Log out"
-                style={{ padding: "4px" }}
+                title="Log out of account"
+                aria-label="Log out"
+                style={{ minWidth: "34px", minHeight: "34px", padding: "6px" }}
               >
-                <LogOut size={17} className="profile-logout-icon" />
+                <LogOut size={16} className="profile-logout-icon" />
               </button>
             )}
           </div>

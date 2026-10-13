@@ -14,6 +14,7 @@ import {
   ShieldAlert,
   Signal,
   Square,
+  X,
 } from "lucide-react";
 import { api } from "../services/api";
 import { startLocationTracking } from "../services/location";
@@ -253,7 +254,7 @@ export function DriverDashboard() {
           onClick={() => void loadDriverData()}
           title="Refresh assignment and trip status"
         >
-          <RefreshCw size={15} />
+          <RefreshCw size={14} />
           <span>Refresh</span>
         </button>
       </section>
@@ -264,18 +265,19 @@ export function DriverDashboard() {
           role="status"
           style={{
             padding: "12px 16px",
-            borderRadius: "10px",
-            background: "#f0fdf4",
-            border: "1px solid #bbf7d0",
-            color: "#166534",
+            borderRadius: "var(--radius-md)",
+            background: "var(--success-50)",
+            border: "1px solid var(--success-100)",
+            color: "var(--success-700)",
             fontSize: "13px",
+            fontWeight: 600,
             display: "flex",
             alignItems: "center",
             gap: "10px",
-            marginBottom: "16px",
+            marginBottom: "18px",
           }}
         >
-          <CheckCircle2 size={18} />
+          <CheckCircle2 size={18} style={{ flexShrink: 0 }} />
           <span>{successMsg}</span>
         </div>
       )}
@@ -295,25 +297,25 @@ export function DriverDashboard() {
         <div
           role="alert"
           style={{
-            padding: "14px 18px",
-            borderRadius: "12px",
-            background: "#fef2f2",
-            border: "1px solid #fecaca",
-            color: "#991b1b",
+            padding: "16px 20px",
+            borderRadius: "var(--radius-md)",
+            background: "var(--danger-50)",
+            border: "1px solid var(--danger-100)",
+            color: "var(--danger-700)",
             display: "flex",
             alignItems: "flex-start",
-            gap: "12px",
-            marginBottom: "20px",
+            gap: "14px",
+            marginBottom: "22px",
           }}
         >
-          <ShieldAlert size={22} color="#dc2626" />
+          <ShieldAlert size={24} color="#dc2626" style={{ flexShrink: 0, marginTop: "2px" }} />
           <div>
-            <strong>GPS Transmission Interrupted</strong>
+            <strong style={{ fontSize: "14px" }}>GPS Transmission Interrupted</strong>
             <p style={{ margin: "4px 0 0", fontSize: "12px", lineHeight: "1.5" }}>
               {gpsErrorMsg}
             </p>
-            <p style={{ margin: "6px 0 0", fontSize: "11px", color: "#b91c1c" }}>
-              Note: Mobile browser location sharing requires granting permission. In production, HTTPS is required for Geolocation API.
+            <p style={{ margin: "6px 0 0", fontSize: "11px", color: "var(--danger-700)" }}>
+              Tip: Allow location permission in your device settings. In production, HTTPS or native APK provides high-precision geolocation.
             </p>
           </div>
         </div>
@@ -323,18 +325,21 @@ export function DriverDashboard() {
       {!assignedBus && (
         <div
           style={{
-            padding: "24px",
-            borderRadius: "14px",
-            background: "#ffffff",
-            border: "1px solid #e2e8f0",
+            padding: "36px 24px",
+            borderRadius: "var(--radius-lg)",
+            background: "var(--surface)",
+            border: "1px solid var(--border)",
             textAlign: "center",
             marginBottom: "24px",
+            boxShadow: "var(--shadow-sm)",
           }}
         >
-          <BusFront size={42} color="#94a3b8" style={{ margin: "0 auto 12px" }} />
-          <h2 style={{ fontSize: "18px", color: "#1e293b", margin: "0 0 6px" }}>No Bus Currently Assigned</h2>
-          <p style={{ margin: 0, color: "#64748b", fontSize: "13px" }}>
-            The transport administrator has not yet assigned a bus to your driver account. Contact the college transport office to assign your bus and route.
+          <BusFront size={48} color="var(--text-light)" style={{ margin: "0 auto 14px" }} />
+          <h2 style={{ fontSize: "18px", color: "var(--navy-900)", margin: "0 0 6px", fontWeight: 800 }}>
+            No Bus Currently Assigned
+          </h2>
+          <p style={{ margin: 0, color: "var(--text-muted)", fontSize: "13px", maxWidth: "460px", marginLeft: "auto", marginRight: "auto" }}>
+            The transport administrator has not yet assigned a bus to your driver account. Contact the campus transport department to assign your vehicle and route.
           </p>
         </div>
       )}
@@ -344,11 +349,11 @@ export function DriverDashboard() {
           {/* Top Control Bar: Start / End Trip */}
           <div
             style={{
-              padding: "20px",
-              borderRadius: "14px",
-              background: "#ffffff",
-              border: "1px solid #e2e8f0",
-              boxShadow: "0 4px 12px rgba(0,0,0,0.04)",
+              padding: "20px 24px",
+              borderRadius: "var(--radius-lg)",
+              background: "var(--surface)",
+              border: "1px solid var(--border)",
+              boxShadow: "var(--shadow-sm)",
               marginBottom: "24px",
               display: "flex",
               flexWrap: "wrap",
@@ -366,38 +371,43 @@ export function DriverDashboard() {
                     height: "10px",
                     borderRadius: "50%",
                     backgroundColor: activeTrip ? "#22c55e" : "#94a3b8",
+                    boxShadow: activeTrip ? "0 0 0 3px rgba(34, 197, 94, 0.25)" : "none",
                   }}
                 />
-                <h2 style={{ fontSize: "18px", fontWeight: "800", color: "#0f172a", margin: 0 }}>
-                  {activeTrip ? "Active Trip in Progress" : "Bus Ready to Depart"}
+                <h2 style={{ fontSize: "18px", fontWeight: "800", color: "var(--navy-900)", margin: 0 }}>
+                  {activeTrip ? "Active Trip in Progress" : "Vehicle Ready for Duty"}
                 </h2>
               </div>
-              <p style={{ margin: 0, fontSize: "13px", color: "#64748b" }}>
+              <p style={{ margin: 0, fontSize: "13px", color: "var(--text-muted)" }}>
                 {activeTrip
-                  ? `Broadcasting GPS coordinates for ${assignedBus.busNumber} (${assignedRoute?.name})`
+                  ? `Broadcasting real-time coordinates for ${assignedBus.busNumber} (${assignedRoute?.name})`
                   : `Assigned to ${assignedBus.busNumber} (${assignedBus.registrationNumber}). Start trip to begin live sharing.`}
               </p>
             </div>
 
-            {/* Controls */}
-            <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+            {/* Action Buttons */}
+            <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
               {!activeTrip ? (
                 <button
-                  className="button button-primary"
+                  className="button"
                   onClick={handleStartTrip}
                   disabled={isStartingTrip}
                   style={{
-                    padding: "12px 24px",
+                    padding: "0 24px",
+                    minHeight: "48px",
                     fontSize: "14px",
-                    fontWeight: "700",
+                    fontWeight: "800",
                     background: "linear-gradient(135deg, #16a34a, #15803d)",
+                    color: "#ffffff",
+                    borderRadius: "var(--radius-md)",
                     display: "flex",
                     alignItems: "center",
                     gap: "8px",
+                    boxShadow: "0 4px 14px rgba(22, 163, 74, 0.35)",
                   }}
                 >
                   <Play size={18} fill="#ffffff" />
-                  <span>{isStartingTrip ? "Starting..." : "Start Trip & Share GPS"}</span>
+                  <span>{isStartingTrip ? "Starting Trip..." : "Start Trip & Broadcast GPS"}</span>
                 </button>
               ) : (
                 <>
@@ -406,10 +416,11 @@ export function DriverDashboard() {
                     onClick={togglePauseGps}
                     title={gpsStatus === "paused" ? "Resume GPS transmission" : "Pause GPS transmission"}
                     style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "6px",
-                      borderColor: gpsStatus === "paused" ? "#f59e0b" : "#cbd5e1",
+                      minHeight: "46px",
+                      padding: "0 16px",
+                      fontWeight: 700,
+                      borderColor: gpsStatus === "paused" ? "var(--warning-500)" : "var(--border)",
+                      color: gpsStatus === "paused" ? "var(--warning-700)" : "var(--navy-800)",
                     }}
                   >
                     {gpsStatus === "paused" ? (
@@ -426,18 +437,14 @@ export function DriverDashboard() {
                   </button>
 
                   <button
-                    className="button"
+                    className="button button-danger"
                     onClick={() => setIsEndingTripModalOpen(true)}
                     style={{
-                      padding: "12px 22px",
+                      minHeight: "46px",
+                      padding: "0 22px",
                       fontSize: "14px",
-                      fontWeight: "700",
-                      background: "#dc2626",
-                      color: "#ffffff",
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      borderRadius: "8px",
+                      fontWeight: "800",
+                      boxShadow: "0 4px 12px rgba(220, 38, 38, 0.3)",
                     }}
                   >
                     <Square size={16} fill="#ffffff" />
@@ -453,8 +460,8 @@ export function DriverDashboard() {
             <StatCard
               icon={BusFront}
               iconColorClass="blue"
-              tag="Assigned Bus"
-              label="Vehicle"
+              tag="Assigned Vehicle"
+              label="Bus Number"
               value={assignedBus.busNumber}
               footnote={assignedBus.registrationNumber}
             />
@@ -463,9 +470,9 @@ export function DriverDashboard() {
               icon={Clock}
               iconColorClass="purple"
               tag={activeTrip ? "In Progress" : "Off Duty"}
-              label="Trip Duration"
+              label="Trip Elapsed"
               value={formatTimer(tripElapsedSeconds)}
-              footnote={activeTrip ? "Live timer" : "Trip not started"}
+              footnote={activeTrip ? "Real-time timer" : "Trip not started"}
             />
 
             <StatCard
@@ -475,7 +482,7 @@ export function DriverDashboard() {
               tagColorClass={gpsStatus === "active" ? "green" : "neutral"}
               label="GPS Status"
               value={gpsStatus === "active" ? "Transmitting" : gpsStatus === "paused" ? "Paused" : "Standby"}
-              footnote={`${updatesSentCount} updates transmitted`}
+              footnote={`${updatesSentCount} telemetry packets sent`}
             />
 
             <StatCard
@@ -484,7 +491,7 @@ export function DriverDashboard() {
               tag="Speed & Precision"
               label="Current Speed"
               value={currentGps?.speed !== undefined ? `${currentGps.speed} km/h` : "—"}
-              footnote={currentGps?.accuracy ? `Accuracy ±${Math.round(currentGps.accuracy)}m` : "No fix"}
+              footnote={currentGps?.accuracy ? `Accuracy ±${Math.round(currentGps.accuracy)}m` : "No GPS fix"}
               isSmallValue
             />
           </section>
@@ -502,7 +509,7 @@ export function DriverDashboard() {
                       {gpsStatus === "active" ? "BROADCASTING" : "STANDBY"}
                     </span>
                   </div>
-                  <p>Your current GPS position being streamed to students.</p>
+                  <p>Your current GPS position being streamed to students and administration.</p>
                 </div>
               </div>
 
@@ -538,13 +545,13 @@ export function DriverDashboard() {
                   <p>{assignedRoute?.name || "Route"}</p>
                 </div>
                 <span className="panel-header-icon">
-                  <RouteIcon size={19} />
+                  <RouteIcon size={18} />
                 </span>
               </div>
 
               <div className="trip-route-heading">
                 <span className="trip-route-icon">
-                  <MapPin size={20} />
+                  <MapPin size={18} />
                 </span>
                 <div>
                   <strong>{assignedRoute?.name || "Assigned Route"}</strong>
@@ -552,7 +559,7 @@ export function DriverDashboard() {
                 </div>
               </div>
 
-              <div className="route-timeline">
+              <div className="route-timeline" style={{ maxHeight: "360px" }}>
                 <div className="timeline-line" />
                 {assignedRoute?.stops && Array.isArray(assignedRoute.stops) && assignedRoute.stops.length > 0 ? (
                   assignedRoute.stops.map((stop: any, index: number) => {
@@ -562,15 +569,13 @@ export function DriverDashboard() {
                         <span className={`timeline-dot ${index === 0 ? "timeline-dot-start" : ""}`} />
                         <div>
                           <strong>{stopObj.name || `Stop ${index + 1}`}</strong>
-                          <span>
-                            Sequence {stop.sequence || index + 1}
-                          </span>
+                          <span>Sequence {stop.sequence || index + 1}</span>
                         </div>
                       </div>
                     );
                   })
                 ) : (
-                  <div style={{ color: "#94a3b8", fontSize: "12px" }}>No route stops assigned.</div>
+                  <div style={{ color: "var(--text-muted)", fontSize: "12px" }}>No route stops assigned.</div>
                 )}
               </div>
             </article>
@@ -580,52 +585,42 @@ export function DriverDashboard() {
 
       {/* Confirmation Modal for Ending Trip */}
       {isEndingTripModalOpen && (
-        <div
-          style={{
-            position: "fixed",
-            inset: 0,
-            background: "rgba(15, 23, 42, 0.6)",
-            backdropFilter: "blur(4px)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            zIndex: 9999,
-            padding: "20px",
-          }}
-        >
-          <div
-            style={{
-              background: "#ffffff",
-              borderRadius: "16px",
-              padding: "28px",
-              maxWidth: "440px",
-              width: "100%",
-              boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.2)",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "12px", marginBottom: "12px" }}>
-              <div
-                style={{
-                  width: "42px",
-                  height: "42px",
-                  borderRadius: "50%",
-                  background: "#fee2e2",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  color: "#dc2626",
-                }}
-              >
-                <AlertTriangle size={24} />
+        <div className="modal-backdrop">
+          <div className="modal-card" style={{ maxWidth: "450px" }}>
+            <div className="modal-header">
+              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                <div
+                  style={{
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "50%",
+                    background: "var(--danger-50)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "var(--danger-600)",
+                  }}
+                >
+                  <AlertTriangle size={20} />
+                </div>
+                <h3 style={{ margin: 0, fontSize: "17px", color: "var(--navy-900)" }}>End Active Trip?</h3>
               </div>
-              <h3 style={{ margin: 0, fontSize: "18px", color: "#0f172a" }}>End Active Trip?</h3>
+              <button
+                className="icon-button"
+                onClick={() => setIsEndingTripModalOpen(false)}
+                aria-label="Close dialog"
+              >
+                <X size={18} />
+              </button>
             </div>
 
-            <p style={{ fontSize: "13px", color: "#475569", lineHeight: "1.6", margin: "0 0 20px" }}>
-              Are you sure you want to end this trip for bus <strong>{assignedBus?.busNumber}</strong>? GPS location broadcasting will terminate and the bus status will update to completed for all students.
-            </p>
+            <div className="modal-body">
+              <p style={{ fontSize: "13px", color: "var(--navy-700)", lineHeight: "1.6", margin: 0 }}>
+                Are you sure you want to end this trip for bus <strong>{assignedBus?.busNumber}</strong>? GPS location broadcasting will terminate and the vehicle status will update to completed for all students.
+              </p>
+            </div>
 
-            <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
+            <div className="modal-footer">
               <button
                 className="button button-secondary"
                 onClick={() => setIsEndingTripModalOpen(false)}
@@ -633,9 +628,9 @@ export function DriverDashboard() {
                 Cancel
               </button>
               <button
-                className="button"
+                className="button button-danger"
                 onClick={handleEndTrip}
-                style={{ background: "#dc2626", color: "#ffffff", fontWeight: "700" }}
+                style={{ fontWeight: 700 }}
               >
                 Yes, End Trip
               </button>
