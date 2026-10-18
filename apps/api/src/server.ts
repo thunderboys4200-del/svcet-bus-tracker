@@ -44,7 +44,8 @@ export function isOriginAllowed(origin?: string): boolean {
   // Allow Capacitor, Ionic and mobile app schemes
   if (/^(capacitor|ionic|https):\/\/localhost(:\d+)?$/.test(origin)) return true;
   // Allow cloud deployments (Render, Vercel, Netlify)
-  if (/^https:\/\/([a-z0-9-]+)\.(onrender\.com|vercel\.app|netlify\.app)$/i.test(origin)) return true;
+  if (/^https:\/\/([a-z0-9-_.]+)\.(onrender\.com|vercel\.app|netlify\.app)$/i.test(origin)) return true;
+  if (/^https:\/\/.*\.vercel\.app$/i.test(origin)) return true;
   return false;
 }
 

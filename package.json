@@ -4,6 +4,9 @@
   "private": true,
   "description": "SVCET Smart College Bus Tracker",
   "scripts": {
+    "dev": "cd apps/web && npm run dev",
+    "dev:web": "cd apps/web && npm run dev",
+    "dev:api": "cd apps/api && npm run dev",
     "build": "cd apps/api && npm install && npm run build",
     "start": "cd apps/api && npm start",
     "build:api": "cd apps/api && npm install && npm run build",

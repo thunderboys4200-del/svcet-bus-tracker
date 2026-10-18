@@ -6,7 +6,7 @@ const CUSTOM_API_URL_KEY = "svcet_custom_api_url";
 export const LOCAL_LAN_API_FALLBACK = "http://10.251.138.130:4000";
 
 // Default production Render cloud backend endpoint
-export const DEFAULT_PRODUCTION_API_URL = "https://svcet-bus-tracker-api.onrender.com";
+export const DEFAULT_PRODUCTION_API_URL = "https://svcet-bus-tracker-2.onrender.com";
 
 export interface ApiConfigInfo {
   url: string;

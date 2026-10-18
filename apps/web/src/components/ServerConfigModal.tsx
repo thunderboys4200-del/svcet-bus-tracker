@@ -10,6 +10,7 @@ import {
   X,
 } from "lucide-react";
 import {
+  DEFAULT_PRODUCTION_API_URL,
   getApiBaseUrl,
   getApiConfigInfo,
   LOCAL_LAN_API_FALLBACK,
@@ -256,7 +257,7 @@ export const ServerConfigModal: React.FC<ServerConfigModalProps> = ({
               <button
                 type="button"
                 onClick={() => {
-                  setInputUrl("https://svcet-bus-tracker-api.onrender.com");
+                  setInputUrl(DEFAULT_PRODUCTION_API_URL);
                   setTestingStatus("idle");
                   setTestResultMsg("");
                 }}
@@ -277,7 +278,7 @@ export const ServerConfigModal: React.FC<ServerConfigModalProps> = ({
                   <Radio size={14} color="#7c3aed" />
                   <span style={{ fontWeight: 600, color: "var(--navy-900)" }}>Render Cloud Backend</span>
                 </div>
-                <code style={{ fontSize: "11px", color: "#7c3aed" }}>https://*.onrender.com</code>
+                <code style={{ fontSize: "11px", color: "#7c3aed" }}>svcet-bus-tracker-2.onrender.com</code>
               </button>
 
               <button
